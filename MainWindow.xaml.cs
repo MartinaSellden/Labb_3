@@ -29,8 +29,8 @@ namespace Labb_3
         {
             InitializeComponent();
             CreateFile();
-            reservationListBox.ItemsSource=TableReservation.reservationList;
-            WriteToFile();
+            reservationListBox.ItemsSource=TableReservation.tableReservationProperties;
+      
         }
 
         public int CheckTableNumberInput()
@@ -70,7 +70,7 @@ namespace Labb_3
                 }
                 input = datepicker1.SelectedDate.Value.Date;
 
-                if (input.Day<DateTime.Now.Day)
+                if (input<DateTime.Now)
                 {
                     MessageBox.Show("Du kan inte välja ett datum innan dagens datum");
                     CheckDateInput();
@@ -115,33 +115,70 @@ namespace Labb_3
         public void UpdateReservationListBox()
         {
             reservationListBox.ItemsSource = null;
-            reservationListBox.ItemsSource = TableReservation.reservationList;
+            reservationListBox.ItemsSource = TableReservation.tableReservationProperties;
         }
 
         public void CreateFile()
         {
-            using (var myFile = File.Create("Bokningar.txt"))
+
+            using (StreamWriter sw = new StreamWriter("Bokningar.txt", true))
             {
                 TableReservation.reservationList.Add(new TableReservation("Martina", 5, "2022-11-01", "20.30"));
                 TableReservation.reservationList.Add(new TableReservation("Kungen", 5, "2022-11-05", "21.30"));
                 TableReservation.tableReservationProperties.Add("2022-11-01 20.30 5 Martina");
-                TableReservation.tableReservationProperties.Add("2022-11-05 21.30 5 Kungen ");              
+                TableReservation.tableReservationProperties.Add("2022-11-05 21.30 5 Kungen ");
+                WriteToFile();
+
             }
+        
+            //using (var myFile = File.Create("Bokningar.txt"))
+            //{
+            //    TableReservation.reservationList.Add(new TableReservation("Martina", 5, "2022-11-01", "20.30"));
+            //    TableReservation.reservationList.Add(new TableReservation("Kungen", 5, "2022-11-05", "21.30"));
+            //    TableReservation.tableReservationProperties.Add("2022-11-01 20.30 5 Martina");
+            //    TableReservation.tableReservationProperties.Add("2022-11-05 21.30 5 Kungen ");
+            //}
 
         }
 
         public void WriteToFile()
         {
-            using (var myFile = File.OpenWrite("Bokningar.txt"))
+
+            //using (var file = File.OpenWrite("Bokningar.txt"))
+            //{
+            //    File.AppendAllLines("Bokningar.txt", TableReservation.tableReservationProperties);
+            //    UpdateReservationListBox();
+            //}
+
+            try
             {
-                File.AppendAllLines("Bokningar.txt", TableReservation.tableReservationProperties);
+
+                using (StreamWriter sw = new StreamWriter("Bokningar.txt", true))
+                {
+                    TableReservation.tableReservationProperties.ForEach(reservation => sw.WriteLine(reservation));
+                    UpdateReservationListBox();
+                }
+
             }
-           
+            catch (Exception e)
+            {
+
+            }
         }
 
-    public void ReadFromFile()
+        public void ReadFromFile()
         {
             throw new NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            datepicker1.SelectedDate=null;
+            timeComboBox.SelectedValue=null;
+            nameTextBox.Clear();
+            tableNumberComboBox.SelectedValue=null;
+
+
         }
 
 
@@ -156,9 +193,15 @@ namespace Labb_3
 
             int tableNumber = CheckTableNumberInput();
 
-           
+
             TableReservation.reservationList.Add(new TableReservation(name, tableNumber, date, time));
-            UpdateReservationListBox();
+            
+            TableReservation.tableReservationProperties.Add(date+" "+time+" "+tableNumber+" "+name);
+
+            WriteToFile();
+
+            Clear();
+          
 
             //var resservation = TableReservation.reservationList.Select(reservation => "Bokning: " + reservation.Name+reservation.Date+reservation.Time+reservation.TableNumber);
             //string s = resservation.ToString();
@@ -169,10 +212,10 @@ namespace Labb_3
 
 
     }
- 
-
-} 
 
 
-   
+}
+
+
+
 
