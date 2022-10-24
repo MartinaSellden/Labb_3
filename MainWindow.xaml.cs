@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace Labb_3
 {
@@ -27,6 +28,9 @@ namespace Labb_3
         public MainWindow()
         {
             InitializeComponent();
+            CreateFile();
+            reservationListBox.ItemsSource=TableReservation.reservationList;
+            WriteToFile();
         }
 
         public int CheckTableNumberInput()
@@ -43,7 +47,7 @@ namespace Labb_3
             return tableNumber;
 
         }
-           public string CheckTimeInput()
+        public string CheckTimeInput()
         {
 
             string time = timeComboBox.Text.ToString();
@@ -51,9 +55,9 @@ namespace Labb_3
             {
                 MessageBox.Show("Du måste välja en tid för att göra dn bokning");
             }
-            
+
             return time;
-           
+
         }
         public DateTime CheckDateInput()
         {
@@ -73,9 +77,9 @@ namespace Labb_3
                 }
 
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
-                
+
             }
             return input;
         }
@@ -89,24 +93,57 @@ namespace Labb_3
                 {
                     MessageBox.Show("Du behöver fylla i ett namn för bokningen, försök igen!");
                     input = nameTextBox.Text;
-                }   
+                }
                 Regex r = new Regex(@"[a-öA-Ö]{2,}");
 
-                validInput = r.IsMatch(input) ? input: "";
+                validInput = r.IsMatch(input) ? input : "";
                 if (string.IsNullOrEmpty(validInput))
                 {
                     MessageBox.Show("Ogiltigt format, endast bokstäver!");
                     CheckNameInput();
                 }
-                
+
             }
-            
+
             catch (Exception e)
             {
                 //
             }
             return input;//[0].ToString().ToUpper() + input.Substring(1).ToLower();
         }
+
+        public void UpdateReservationListBox()
+        {
+            reservationListBox.ItemsSource = null;
+            reservationListBox.ItemsSource = TableReservation.reservationList;
+        }
+
+        public void CreateFile()
+        {
+            using (var myFile = File.Create("Bokningar.txt"))
+            {
+                TableReservation.reservationList.Add(new TableReservation("Martina", 5, "2022-11-01", "20.30"));
+                TableReservation.reservationList.Add(new TableReservation("Kungen", 5, "2022-11-05", "21.30"));
+                TableReservation.tableReservationProperties.Add("2022-11-01 20.30 5 Martina");
+                TableReservation.tableReservationProperties.Add("2022-11-05 21.30 5 Kungen ");              
+            }
+
+        }
+
+        public void WriteToFile()
+        {
+            using (var myFile = File.OpenWrite("Bokningar.txt"))
+            {
+                File.AppendAllLines("Bokningar.txt", TableReservation.tableReservationProperties);
+            }
+           
+        }
+
+    public void ReadFromFile()
+        {
+            throw new NotImplementedException();
+        }
+
 
         private void reservationButton_Click(object sender, RoutedEventArgs e)
         {
@@ -115,17 +152,27 @@ namespace Labb_3
 
             string name = CheckNameInput();
 
-            string time =  CheckTimeInput();
+            string time = CheckTimeInput();
 
             int tableNumber = CheckTableNumberInput();
 
            
             TableReservation.reservationList.Add(new TableReservation(name, tableNumber, date, time));
+            UpdateReservationListBox();
 
             //var resservation = TableReservation.reservationList.Select(reservation => "Bokning: " + reservation.Name+reservation.Date+reservation.Time+reservation.TableNumber);
             //string s = resservation.ToString();
             //MessageBox.Show(s);
 
         }
+
+
+
     }
-}
+ 
+
+} 
+
+
+   
+

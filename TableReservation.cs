@@ -15,9 +15,9 @@ namespace Labb_3
         public string Time { get; set; }
         public int TableNumber { get; set; }    
         
-
+        public static List<string> tableReservationProperties = new List<string>();
         public static List<TableReservation> reservationList = new List<TableReservation>();
-        static List<Restaurant> restaurantsAvailable = new List<Restaurant>();
+        //static List<Restaurant> restaurantsAvailable = new List<Restaurant>();
 
         public TableReservation(string Name, int TableNumber, string Date, string Time)
         {

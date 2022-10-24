@@ -25,6 +25,8 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="20"/>
 
         </Grid.RowDefinitions>
@@ -35,7 +37,7 @@
         </Label>
         <DatePicker Grid.Column="4" Grid.Row="2" Text="Välj datum" Name ="datepicker1">
         </DatePicker>
-       
+        <Label Content="Tid" Grid.Column="4" Grid.Row="3"/>
         <ComboBox Name="timeComboBox" Grid.Column="4" Grid.Row="4" VerticalAlignment="Center" IsEditable="False" >
             <ComboBoxItem Name ="time1" Content = "18.00" />
             <ComboBoxItem Name ="time2" Content = "18.30" />
@@ -47,6 +49,7 @@
             <ComboBoxItem Name ="time8" Content = "21.30" />
             <ComboBoxItem Name ="time9" Content = "22.00" />
         </ComboBox>
+        <Label Content="Bordsnummer" Grid.Column="6" Grid.Row="3"/>
         <ComboBox Name="tableNumberComboBox" Grid.Column="6" Grid.Row="4" VerticalAlignment="Center" IsEditable="False">
             <ComboBoxItem Name="table1" Content ="1" />
             <ComboBoxItem Name="table2" Content ="2" />
@@ -57,15 +60,14 @@
             <ComboBoxItem Name="table7" Content ="7" />
             <ComboBoxItem Name="table8" Content ="8" />
             <ComboBoxItem Name="table9" Content ="9" />
-
         </ComboBox>
 
         <Label Content="Namn" Grid.Column="6" Grid.Row="1"/>
         <TextBox Name ="nameTextBox" Grid.Column="6" Grid.Row="2">
         </TextBox>
+        <ListBox Name="reservationListBox" Grid.Column="1" Grid.Row =" 3" Grid.RowSpan="4">
+        </ListBox>
         
-        <Label Content="Tid" Grid.Column="4" Grid.Row="3"/>
-        <Label Content="Bordsnummer" Grid.Column="6" Grid.Row="3"/>
         <Button Name="reservationButton" Content="Boka" Grid.Column="4" Grid.Row="7" Height="20" VerticalAlignment="Top" Click="reservationButton_Click">
         </Button>
 
