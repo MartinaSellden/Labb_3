@@ -13,17 +13,20 @@ namespace Labb_3
         public string Name { get; set; }
         public string Date { get; set; }
         public string Time { get; set; }
-        public int TableNumber { get; set; }    
+        public Table table { get; set; }  
+        
+        public int NumberOfGuests { get; set; }
         
         public static List<string> tableReservationProperties = new List<string>();
         public static List<TableReservation> reservationList = new List<TableReservation>();
         //static List<Restaurant> restaurantsAvailable = new List<Restaurant>();
     
-        public TableReservation(string Name, int TableNumber, string Date, string Time)
+        public TableReservation(string Name, Table table, int numberOfGuests, string Date, string Time)
         {
            
             this.Name = Name;
-            this.TableNumber = TableNumber; //kolla att numret är 1-5
+            this.table = table;
+            this.NumberOfGuests = numberOfGuests; //kolla att det inte blir fler än 5 gäster vid ett givet bord en given tidpunkt
             this.Date = Date; //fixa kalender man kan trycka på 
             this.Time = Time;
 
@@ -48,19 +51,7 @@ namespace Labb_3
             // ta bort bokningen från filen
         }
 
-        public List<TableReservation> ReadFromFile(string fileName)
-        {
-           string [] lines =  File.ReadAllLines(fileName);
-           lines.ToList();
-            // få in parametrarna från listan och göra object till en lista av bokningar. 
-            //Namn som kan variera i längd bör står sist. 
-            return new List<TableReservation>();
-        }
-
-        public void DisplayReservations()
-        {
-           
-        }
+        
 
         //public string CheckNameInput()
         //{
@@ -80,7 +71,7 @@ namespace Labb_3
         //    return input[0].ToString().ToUpper() + input.Substring(1).ToLower();
         //}
 
-      
+
 
         //När man kollar datuminput, kolla att datumet inte är innan idag. 
 
