@@ -28,6 +28,7 @@ namespace Labb_3
         public MainWindow()
         {
             InitializeComponent();
+            DisplayReservations();
         }
 
         public int CheckTableNumberInput()
@@ -170,9 +171,33 @@ namespace Labb_3
 
             }
         }
+        public void WriteNewFile()
+        {
 
+            //using (var file = File.OpenWrite("Bokningar.txt"))
+            //{
+            //    File.AppendAllLines("Bokningar.txt", TableReservation.tableReservationProperties);
+            //    UpdateReservationListBox();
+            //}
+
+            try
+            {
+
+                using (StreamWriter sw = new StreamWriter("Bokningar.txt", false))
+                {
+                    TableReservation.tableReservationProperties.ForEach(reservation => sw.WriteLine(reservation));
+
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
         public void ReadFromFile(string fileName)
         {
+            TableReservation.tableReservationProperties.Clear();
             string[] lines = File.ReadAllLines(fileName);
             TableReservation.tableReservationProperties = lines.ToList();
 
@@ -185,16 +210,16 @@ namespace Labb_3
 
             foreach(string reservation in TableReservation.tableReservationProperties)
             {
-                date = reservation.Substring(0, 10);
-                time = reservation.Substring(11,5);
+                date = reservation.Substring(0,10);
+                time = reservation.Substring(11, 5);
                 tableNumber = reservation.Substring(17, 1);
-                numberOfGuests = Int32.Parse(reservation.Substring(18,1));
+                numberOfGuests = Int32.Parse(reservation.Substring(19, 1));
                 table = new Table(Int32.Parse(tableNumber), 5-numberOfGuests);
                 name = reservation.Substring(21);
 
                 TableReservation.reservationList.Add(new TableReservation(name,table,numberOfGuests,date,time));
 
-            }
+            } //sätt try catch för argumentOutOfrangeexception
 
             // 2022-11-01 20.30 5 2 Martina       exempel
             // få in parametrarna från listan och göra object till en "reservationList" lista av bokningar. Alltså att reservationList blir vad som finns exakt just nu i filen.
@@ -203,12 +228,12 @@ namespace Labb_3
 
         public void DisplayReservations()
         {
-            TableReservation.tableReservationProperties.Clear();
+            
             ReadFromFile("Bokningar.txt");
-            reservationListBox.ItemsSource=TableReservation.tableReservationProperties;
+            UpdateReservationListBox();
             //TableReservation.tableReservationProperties.Add("2022-11-01 20.30 5 2 Martina");
             //TableReservation.tableReservationProperties.Add("2022-11-05 21.30 5 2 Kungen ");
-            UpdateReservationListBox();
+            //UpdateReservationListBox();
         }
 
         public void Clear()
@@ -238,12 +263,19 @@ namespace Labb_3
 
             TableReservation.reservationList.Add(new TableReservation(name, newTable, numberOfGuests, date, time));
 
+            TableReservation.tableReservationProperties.Clear();
+
             TableReservation.tableReservationProperties.Add(date+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
 
             WriteToFile();
 
             Clear();
 
+            DisplayReservations();
+
+            
+
+            //kolla att man inte kan lägga till tomma
 
             //var resservation = TableReservation.reservationList.Select(reservation => "Bokning: " + reservation.Name+reservation.Date+reservation.Time+reservation.TableNumber);
             //string s = resservation.ToString();
@@ -251,9 +283,21 @@ namespace Labb_3
 
         }
 
-        private void Display_Click(object sender, RoutedEventArgs e)
+        //private void Display_Click(object sender, RoutedEventArgs e)
+        //{
+        //    DisplayReservations();
+        //}
+
+        private void RemoveReservation_Click(object sender, RoutedEventArgs e)   //Ändra namn på metoderna
         {
+            if (reservationListBox.SelectedItem==null)
+                return;
+            TableReservation.tableReservationProperties.Remove((string)reservationListBox.SelectedItem);
+            WriteNewFile();
             DisplayReservations();
+            UpdateReservationListBox();
+
+            //Fortsätta kolla. Den tar bort det jag valt. Men inte från filen.
         }
     }
 

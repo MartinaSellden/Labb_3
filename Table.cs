@@ -8,8 +8,8 @@ namespace Labb_3
 {
     internal class Table
     {
-        int Number { get; set; }
-        int numberOfFreeSeats = 5;
+       public int Number { get; set; }
+       public int numberOfFreeSeats = 5;
 
         public Table(int number, int numberOfSeats)
         {
