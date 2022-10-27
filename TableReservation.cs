@@ -36,14 +36,14 @@ namespace Labb_3
 
         }
 
-        public void MakeReservation() //TableReservation eller void?
-        {
+        //public void MakeReservation() //TableReservation eller void?
+       // {
 
 
             //TableReservation nyBokning = new TableReservation();
             //bookingList.Add(nyBokning);
             //skriv nya bokningen till fil
-        }
+       // }
 
         public void CancelReservation()
         {

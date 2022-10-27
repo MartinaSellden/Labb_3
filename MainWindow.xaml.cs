@@ -31,7 +31,7 @@ namespace Labb_3
             DisplayReservations();
         }
 
-        public int CheckTableNumberInput()
+        private int CheckTableNumberInput()
         {
             string input;
             int tableNumber;
@@ -45,7 +45,7 @@ namespace Labb_3
             return tableNumber;
 
         }
-        public string CheckTimeInput()
+        private string CheckTimeInput()
         {
 
             string time = timeComboBox.Text.ToString();
@@ -56,7 +56,7 @@ namespace Labb_3
             return time;
 
         }
-        public DateTime CheckDateInput()
+        private DateTime CheckDateInput()
         {
             DateTime input = DateTime.Now;
             try
@@ -80,7 +80,7 @@ namespace Labb_3
             }
             return input;
         }
-        public string CheckNameInput()
+        private string CheckNameInput()
         {
             string input = nameTextBox.Text;
             string validInput;
@@ -104,11 +104,11 @@ namespace Labb_3
 
             catch (Exception e)
             {
-                //
+                
             }
-            return input;//[0].ToString().ToUpper() + input.Substring(1).ToLower();
+            return input;
         }
-        public int CheckNumberOfGuests()
+        private int CheckNumberOfGuests()
         {
             string numberOfGuests = GuestsComboBox.Text.ToString();
             while (numberOfGuests == null)
@@ -119,35 +119,13 @@ namespace Labb_3
             return Int32.Parse(numberOfGuests);
         }
 
-        public void UpdateReservationListBox()
+        private void UpdateReservationListBox()
         {
             reservationListBox.ItemsSource = null;
             reservationListBox.ItemsSource = TableReservation.tableReservationProperties;
         }
 
-        //public void CreateFile()
-        //{
-
-        //    using (StreamWriter sw = new StreamWriter("Bokningar.txt", true))
-        //    {
-        //        TableReservation.reservationList.Add(new TableReservation("Martina", 5, "2022-11-01", "20.30"));
-        //        TableReservation.reservationList.Add(new TableReservation("Kungen", 5, "2022-11-05", "21.30"));
-
-        //        WriteToFile();
-
-        //    }
-
-        //using (var myFile = File.Create("Bokningar.txt"))
-        //{
-        //    TableReservation.reservationList.Add(new TableReservation("Martina", 5, "2022-11-01", "20.30"));
-        //    TableReservation.reservationList.Add(new TableReservation("Kungen", 5, "2022-11-05", "21.30"));
-        //    TableReservation.tableReservationProperties.Add("2022-11-01 20.30 5 Martina");
-        //    TableReservation.tableReservationProperties.Add("2022-11-05 21.30 5 Kungen ");
-        //}
-
-        //}
-
-        public void WriteToFile()
+        private void WriteToFile()
         {
 
             //using (var file = File.OpenWrite("Bokningar.txt"))
@@ -171,22 +149,14 @@ namespace Labb_3
 
             }
         }
-        public void WriteNewFile()
+        private void WriteNewFile()
         {
-
-            //using (var file = File.OpenWrite("Bokningar.txt"))
-            //{
-            //    File.AppendAllLines("Bokningar.txt", TableReservation.tableReservationProperties);
-            //    UpdateReservationListBox();
-            //}
-
             try
             {
 
                 using (StreamWriter sw = new StreamWriter("Bokningar.txt", false))
                 {
                     TableReservation.tableReservationProperties.ForEach(reservation => sw.WriteLine(reservation));
-
                 }
 
             }
@@ -195,7 +165,7 @@ namespace Labb_3
 
             }
         }
-        public void ReadFromFile(string fileName)
+        private void ReadFromFile(string fileName)
         {
             TableReservation.tableReservationProperties.Clear();
             string[] lines = File.ReadAllLines(fileName);
@@ -226,27 +196,7 @@ namespace Labb_3
             //Namn som kan variera i längd bör står sist. 
         }
 
-        public void DisplayReservations()
-        {
-            
-            ReadFromFile("Bokningar.txt");
-            UpdateReservationListBox();
-            //TableReservation.tableReservationProperties.Add("2022-11-01 20.30 5 2 Martina");
-            //TableReservation.tableReservationProperties.Add("2022-11-05 21.30 5 2 Kungen ");
-            //UpdateReservationListBox();
-        }
-
-        public void Clear()
-        {
-            datepicker1.SelectedDate=null;
-            timeComboBox.SelectedValue=null;
-            nameTextBox.Clear();
-            tableNumberComboBox.SelectedValue=null;
-            GuestsComboBox.SelectedValue=null;
-        }
-
-
-        private void reservationButton_Click(object sender, RoutedEventArgs e)
+        public void MakeReservation()
         {
             DateTime dateInput = CheckDateInput();   //ska lägga allt detta i make reservation sen 
             string date = dateInput.ToShortDateString();
@@ -272,8 +222,29 @@ namespace Labb_3
             Clear();
 
             DisplayReservations();
+        }
 
+        private void DisplayReservations()
+        {
             
+            ReadFromFile("Bokningar.txt");
+            UpdateReservationListBox();
+
+        }
+
+        private void Clear()
+        {
+            datepicker1.SelectedDate=null;
+            timeComboBox.SelectedValue=null;
+            nameTextBox.Clear();
+            tableNumberComboBox.SelectedValue=null;
+            GuestsComboBox.SelectedValue=null;
+        }
+
+
+        private void reservationButton_Click(object sender, RoutedEventArgs e)
+        {
+            MakeReservation();  
 
             //kolla att man inte kan lägga till tomma
 
@@ -282,11 +253,6 @@ namespace Labb_3
             //MessageBox.Show(s);
 
         }
-
-        //private void Display_Click(object sender, RoutedEventArgs e)
-        //{
-        //    DisplayReservations();
-        //}
 
         private void RemoveReservation_Click(object sender, RoutedEventArgs e)   //Ändra namn på metoderna
         {
