@@ -224,7 +224,7 @@ namespace Labb_3
             var reservationsAtChosenTable = reservationWithSameTime.Where(reservation => reservation.table.Number==tableNumber)
                                                                      .Select(reservation => reservation)
                                                                      .ToList();
-            var freeSeatsAtTable = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfFreeSeats).ToList();  //freeSeats istället ?
+            var freeSeatsAtTable = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfFreeSeats).ToList(); 
 
             List<int> reservedSeatsPerReservation = new List<int>();
 
@@ -240,13 +240,8 @@ namespace Labb_3
                 sumOfReservedSeats = sumOfReservedSeats + reservedSeatsPerReservation[i];
             }
 
-            //int reservedSeats = 5;
             int sumOfFreeSeats = 5; 
 
-            //foreach (var available in seats)
-            //{
-            //    sumOfAvailableSeats += available; 
-            //}
             if (sumOfReservedSeats!=0)
             {
                 int freeSeats = sumOfFreeSeats-sumOfReservedSeats;
@@ -269,11 +264,13 @@ namespace Labb_3
                 }
                 else if (freeSeats<=0)
                 {
-                    MessageBox.Show("Det finns inga platser kvar vid valt bord, vänligen försök igen!", "Inga lediga platser vid valt bord", MessageBoxButton.OK, MessageBoxImage.Error);//eventuellt kolla vilka bord som har lediga platser de tiderna och föreslå.
+                    MessageBox.Show("Det finns inga platser kvar vid valt bord, vänligen försök igen!", "Inga lediga platser vid valt bord", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //eventuellt kolla vilka bord som har lediga platser de tiderna och föreslå.
                 }
                 else
                 {
-                    MessageBox.Show("Det finns "+ (freeSeats) + " platser kvar vid valt bord. Justera antalet personer du vill boka för eller välj annat bord", "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error); //eventuellt kolla vilka bord som har lediga platser de tiderna 
+                    MessageBox.Show("Det finns "+ (freeSeats) + " platser kvar vid valt bord. Justera antalet personer du vill boka för eller välj annat bord", "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error); 
+                    //eventuellt kolla vilka bord som har lediga platser de tiderna 
                 }
 
 
@@ -312,20 +309,11 @@ namespace Labb_3
             tableNumberComboBox.SelectedValue=null;
             GuestsComboBox.SelectedValue=null;
         }
-
-
         private void reservationButton_Click(object sender, RoutedEventArgs e)
         {
             MakeReservation();  
 
-            //kolla att man inte kan lägga till tomma
-
-            //var resservation = TableReservation.reservationList.Select(reservation => "Bokning: " + reservation.Name+reservation.Date+reservation.Time+reservation.TableNumber);
-            //string s = resservation.ToString();
-            //MessageBox.Show(s);
-
         }
-
         private void RemoveReservation_Click(object sender, RoutedEventArgs e)   //Ändra namn på metoderna
         {
             if (reservationListBox.SelectedItem==null)
@@ -335,7 +323,6 @@ namespace Labb_3
             DisplayReservations();
             UpdateReservationListBox();
 
-            //Fortsätta kolla. Den tar bort det jag valt. Men inte från filen.
         }
     }
 
