@@ -165,8 +165,9 @@ namespace Labb_3
 
             }
         }
-        private void ReadFromFile(string fileName)
+        private void ReadFromFile()
         {
+            string fileName = "Bokningar.txt";
             TableReservation.tableReservationProperties.Clear();
             string[] lines = File.ReadAllLines(fileName);
             TableReservation.tableReservationProperties = lines.ToList();
@@ -178,7 +179,9 @@ namespace Labb_3
             Table table;
             string name;
 
-            foreach(string reservation in TableReservation.tableReservationProperties)
+            TableReservation.reservationList.Clear(); //kanske?
+
+            foreach (string reservation in TableReservation.tableReservationProperties)
             {
                 date = reservation.Substring(0,10);
                 time = reservation.Substring(11, 5);
@@ -198,6 +201,7 @@ namespace Labb_3
 
         public void MakeReservation()
         {
+            ReadFromFile();
 
             DateTime dateInput = CheckDateInput();   
             string date = dateInput.ToShortDateString();
@@ -216,27 +220,46 @@ namespace Labb_3
             var reservationWithSameTime = reservationsWithSameDate.Where(reservation => reservation.Time==time)
                                                                   .Select(reservation => reservation)
                                                                   .ToList();
-            //var reservationWithSameTableNumber = reservationWithSameTime.SelectMany(reservation=>reservation.table)
 
-            //var TableNumbersInSameTime = reservationWithSameTime.Select(reservation=>reservation.table.Number).ToList();
-            //var TableNumberCorrespondingToNewReservation = TableNumbersInSameTime.Where(number => number==tableNumber).Select(number => number).ToList();
             var reservationsAtChosenTable = reservationWithSameTime.Where(reservation => reservation.table.Number==tableNumber)
                                                                      .Select(reservation => reservation)
                                                                      .ToList();
-            var seats = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfReservedSeats).ToList();  //freeSeats istället ?
+            var freeSeatsAtTable = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfFreeSeats).ToList();  //freeSeats istället ?
 
-            int seatsAvailable = 5;
-            int sumOfAvailableSeats = 0;
+            List<int> reservedSeatsPerReservation = new List<int>();
 
-            foreach (var available in seats)
-            {
-                sumOfAvailableSeats += available; //seats[0];
+            for(int i = 0; i<freeSeatsAtTable.Count; i++)
+            {            
+                    int reservedAtTable = 5 - freeSeatsAtTable[i];
+                    reservedSeatsPerReservation.Add(reservedAtTable);
             }
-            if (sumOfAvailableSeats!=0)
+            int sumOfReservedSeats = 0;
+
+            for (int i = 0; i<reservedSeatsPerReservation.Count; i++)
             {
-                seatsAvailable = sumOfAvailableSeats;
+                sumOfReservedSeats = sumOfReservedSeats + reservedSeatsPerReservation[i];
+            }
+
+
+
+            //int reservedSeatsInFirstReservation = 5-freeSeatsAtTable[0];   //forloop som går igenom när det inte är null
+            //int reservedSeatsInSecondReservation = 5-freeSeatsAtTable[1];
+            //int reservedSeatsInThirdReservation = 5-freeSeatsAtTable[2];
+            //int reservedSeatsInForthReservation = 5-freeSeatsAtTable[3];
+            //int reservedSeatsInFifthReservation = 5-freeSeatsAtTable[4];
+
+            //int reservedSeats = 5;
+            int sumOfFreeSeats = 5; 
+
+            //foreach (var available in seats)
+            //{
+            //    sumOfAvailableSeats += available; 
+            //}
+            if (sumOfReservedSeats!=0)
+            {
+                int freeSeats = sumOfFreeSeats-sumOfReservedSeats;
  
-                if (seatsAvailable>=numberOfGuests)
+                if (freeSeats>=numberOfGuests)
                 {
                     Table newTable = new Table(tableNumber, numberOfGuests);
 
@@ -252,13 +275,13 @@ namespace Labb_3
 
                     DisplayReservations();
                 }
-                else if (seatsAvailable<=0)
+                else if (freeSeats<=0)
                 {
                     MessageBox.Show("Det finns inga platser kvar vid valt bord, vänligen försök igen!", "Inga lediga platser vid valt bord", MessageBoxButton.OK, MessageBoxImage.Error);//eventuellt kolla vilka bord som har lediga platser de tiderna och föreslå.
                 }
                 else
                 {
-                    MessageBox.Show("Det finns "+ (seatsAvailable) + " platser kvar vid valt bord. Justera antalet personer du vill boka för eller välj annat bord", "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error); //eventuellt kolla vilka bord som har lediga platser de tiderna 
+                    MessageBox.Show("Det finns "+ (freeSeats) + " platser kvar vid valt bord. Justera antalet personer du vill boka för eller välj annat bord", "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error); //eventuellt kolla vilka bord som har lediga platser de tiderna 
                 }
 
 
@@ -284,7 +307,7 @@ namespace Labb_3
         private void DisplayReservations()
         {
             
-            ReadFromFile("Bokningar.txt");
+            ReadFromFile();
             UpdateReservationListBox();
 
         }
