@@ -38,7 +38,7 @@ namespace Labb_3
 
             while (tableNumberComboBox.Text=="")
             {
-                MessageBox.Show("Du måste välja ett bordsnummer");
+                MessageBox.Show("Du måste välja ett bordsnummer","Bordsnummer ej valt!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             input = tableNumberComboBox.Text;
             tableNumber = Convert.ToInt32(input);
@@ -51,7 +51,7 @@ namespace Labb_3
             string time = timeComboBox.Text.ToString();
             while (time == null)
             {
-                MessageBox.Show("Du måste välja en tid för att göra dn bokning");
+                MessageBox.Show("Du måste välja en tid för att göra din bokning", "Tid ej vald", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return time;
 
@@ -63,13 +63,13 @@ namespace Labb_3
             {
                 while (datepicker1.SelectedDate==null)
                 {
-                    MessageBox.Show("Du behöver välja ett datum för att slutföra bokningen");
+                    MessageBox.Show("Du behöver välja ett datum för att slutföra bokningen", "Datum ej valt", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 input = datepicker1.SelectedDate.Value.Date;
 
                 if (input<DateTime.Now)
                 {
-                    MessageBox.Show("Du kan inte välja ett datum innan dagens datum");
+                    MessageBox.Show("Du kan inte välja ett datum innan dagens datum", "Du kan ej göra bokningar bakåt i tiden", MessageBoxButton.OK, MessageBoxImage.Error);
                     CheckDateInput();
                 }
 
@@ -88,7 +88,7 @@ namespace Labb_3
             {
                 while (string.IsNullOrEmpty(input))
                 {
-                    MessageBox.Show("Du behöver fylla i ett namn för bokningen, försök igen!");
+                    MessageBox.Show("Du behöver fylla i ett namn för bokningen, försök igen!", "Fyll i namn för bokningen", MessageBoxButton.OK, MessageBoxImage.Error);
                     input = nameTextBox.Text;
                 }
                 Regex r = new Regex(@"[a-öA-Ö]{2,}");
@@ -96,7 +96,7 @@ namespace Labb_3
                 validInput = r.IsMatch(input) ? input : "";
                 if (string.IsNullOrEmpty(validInput))
                 {
-                    MessageBox.Show("Ogiltigt format, endast bokstäver!");
+                    MessageBox.Show("Ogiltigt format, endast bokstäver!", "Ogiltigt format", MessageBoxButton.OK, MessageBoxImage.Error);
                     CheckNameInput();
                 }
 
@@ -113,7 +113,7 @@ namespace Labb_3
             string numberOfGuests = GuestsComboBox.Text.ToString();
             while (numberOfGuests == null)
             {
-                MessageBox.Show("Du måste välja en tid för att göra dn bokning");
+                MessageBox.Show("Du måste välja en tid för din bokning", "Tid ej vald", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             return Int32.Parse(numberOfGuests);
@@ -165,8 +165,9 @@ namespace Labb_3
 
             }
         }
-        private void ReadFromFile(string fileName)
+        private void ReadFromFile()
         {
+            string fileName = "Bokningar.txt";
             TableReservation.tableReservationProperties.Clear();
             string[] lines = File.ReadAllLines(fileName);
             TableReservation.tableReservationProperties = lines.ToList();
@@ -178,7 +179,9 @@ namespace Labb_3
             Table table;
             string name;
 
-            foreach(string reservation in TableReservation.tableReservationProperties)
+            TableReservation.reservationList.Clear();
+
+            foreach (string reservation in TableReservation.tableReservationProperties)
             {
                 date = reservation.Substring(0,10);
                 time = reservation.Substring(11, 5);
@@ -198,7 +201,9 @@ namespace Labb_3
 
         public void MakeReservation()
         {
-            DateTime dateInput = CheckDateInput();   //ska lägga allt detta i make reservation sen 
+            ReadFromFile();
+
+            DateTime dateInput = CheckDateInput();   
             string date = dateInput.ToShortDateString();
 
             string name = CheckNameInput();
@@ -209,25 +214,92 @@ namespace Labb_3
 
             int numberOfGuests = CheckNumberOfGuests();
 
-            Table newTable = new Table(tableNumber, numberOfGuests);
+            var reservationsWithSameDate = TableReservation.reservationList.Where(reservation => reservation.Date==date)
+                                                                           .Select(reservation=>reservation)
+                                                                           .ToList();
+            var reservationWithSameTime = reservationsWithSameDate.Where(reservation => reservation.Time==time)
+                                                                  .Select(reservation => reservation)
+                                                                  .ToList();
 
-            TableReservation.reservationList.Add(new TableReservation(name, newTable, numberOfGuests, date, time));
+            var reservationsAtChosenTable = reservationWithSameTime.Where(reservation => reservation.table.Number==tableNumber)
+                                                                     .Select(reservation => reservation)
+                                                                     .ToList();
+            var freeSeatsAtTable = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfFreeSeats).ToList();  //freeSeats istället ?
 
-            TableReservation.tableReservationProperties.Clear();
+            List<int> reservedSeatsPerReservation = new List<int>();
 
-            TableReservation.tableReservationProperties.Add(date+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
+            for(int i = 0; i<freeSeatsAtTable.Count; i++)
+            {            
+                    int reservedAtTable = 5 - freeSeatsAtTable[i];
+                    reservedSeatsPerReservation.Add(reservedAtTable);
+            }
+            int sumOfReservedSeats = 0;
 
-            WriteToFile();
+            for (int i = 0; i<reservedSeatsPerReservation.Count; i++)
+            {
+                sumOfReservedSeats = sumOfReservedSeats + reservedSeatsPerReservation[i];
+            }
 
-            Clear();
+            //int reservedSeats = 5;
+            int sumOfFreeSeats = 5; 
 
-            DisplayReservations();
+            //foreach (var available in seats)
+            //{
+            //    sumOfAvailableSeats += available; 
+            //}
+            if (sumOfReservedSeats!=0)
+            {
+                int freeSeats = sumOfFreeSeats-sumOfReservedSeats;
+ 
+                if (freeSeats>=numberOfGuests)
+                {
+                    Table newTable = new Table(tableNumber, numberOfGuests);
+
+                    TableReservation.reservationList.Add(new TableReservation(name, newTable, numberOfGuests, date, time));
+
+                    TableReservation.tableReservationProperties.Clear();
+
+                    TableReservation.tableReservationProperties.Add(date+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
+
+                    WriteToFile();
+
+                    Clear();
+
+                    DisplayReservations();
+                }
+                else if (freeSeats<=0)
+                {
+                    MessageBox.Show("Det finns inga platser kvar vid valt bord, vänligen försök igen!", "Inga lediga platser vid valt bord", MessageBoxButton.OK, MessageBoxImage.Error);//eventuellt kolla vilka bord som har lediga platser de tiderna och föreslå.
+                }
+                else
+                {
+                    MessageBox.Show("Det finns "+ (freeSeats) + " platser kvar vid valt bord. Justera antalet personer du vill boka för eller välj annat bord", "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error); //eventuellt kolla vilka bord som har lediga platser de tiderna 
+                }
+
+
+            }
+            else
+            {
+                Table newTable = new Table(tableNumber, numberOfGuests);
+
+                TableReservation.reservationList.Add(new TableReservation(name, newTable, numberOfGuests, date, time));
+
+                TableReservation.tableReservationProperties.Clear();
+
+                TableReservation.tableReservationProperties.Add(date+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
+
+                WriteToFile();
+
+                Clear();
+
+                DisplayReservations();
+            }
         }
 
         private void DisplayReservations()
         {
             
-            ReadFromFile("Bokningar.txt");
+            ReadFromFile();
             UpdateReservationListBox();
 
         }

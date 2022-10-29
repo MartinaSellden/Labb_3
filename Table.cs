@@ -9,12 +9,14 @@ namespace Labb_3
     internal class Table
     {
        public int Number { get; set; }
-       public int numberOfFreeSeats = 5;
+        //public int NumberOfReservedSeats { get; set; }
+       public int NumberOfFreeSeats { get; set; }
 
-        public Table(int number, int numberOfSeats)
+        public Table(int number, int numberOfGuests)
         {
             Number = number;
-            this.numberOfFreeSeats -= numberOfSeats;
+           
+            this.NumberOfFreeSeats = numberOfGuests;
 
         }
     }
