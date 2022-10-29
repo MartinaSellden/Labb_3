@@ -51,7 +51,7 @@ namespace Labb_3
             string time = timeComboBox.Text.ToString();
             while (time == null)
             {
-                MessageBox.Show("Du måste välja en tid för att göra dn bokning", "Tid ej vald", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Du måste välja en tid för att göra din bokning", "Tid ej vald", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return time;
 
@@ -179,7 +179,7 @@ namespace Labb_3
             Table table;
             string name;
 
-            TableReservation.reservationList.Clear(); //kanske?
+            TableReservation.reservationList.Clear();
 
             foreach (string reservation in TableReservation.tableReservationProperties)
             {
@@ -239,14 +239,6 @@ namespace Labb_3
             {
                 sumOfReservedSeats = sumOfReservedSeats + reservedSeatsPerReservation[i];
             }
-
-
-
-            //int reservedSeatsInFirstReservation = 5-freeSeatsAtTable[0];   //forloop som går igenom när det inte är null
-            //int reservedSeatsInSecondReservation = 5-freeSeatsAtTable[1];
-            //int reservedSeatsInThirdReservation = 5-freeSeatsAtTable[2];
-            //int reservedSeatsInForthReservation = 5-freeSeatsAtTable[3];
-            //int reservedSeatsInFifthReservation = 5-freeSeatsAtTable[4];
 
             //int reservedSeats = 5;
             int sumOfFreeSeats = 5; 
