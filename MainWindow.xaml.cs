@@ -38,7 +38,7 @@ namespace Labb_3
 
             while (tableNumberComboBox.Text=="")
             {
-                MessageBox.Show("Du måste välja ett bordsnummer","Bordsnummer ej valt!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Du måste välja ett bordsnummer", "Bordsnummer ej valt!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             input = tableNumberComboBox.Text;
             tableNumber = Convert.ToInt32(input);
@@ -49,7 +49,7 @@ namespace Labb_3
         {
 
             string time = timeComboBox.Text.ToString();
-            while (time == null)
+            while (timeComboBox.Text== "")
             {
                 MessageBox.Show("Du måste välja en tid för att göra din bokning", "Tid ej vald", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -127,12 +127,6 @@ namespace Labb_3
 
         private void WriteToFile()
         {
-
-            //using (var file = File.OpenWrite("Bokningar.txt"))
-            //{
-            //    File.AppendAllLines("Bokningar.txt", TableReservation.tableReservationProperties);
-            //    UpdateReservationListBox();
-            //}
 
             try
             {
