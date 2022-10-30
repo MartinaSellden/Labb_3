@@ -42,15 +42,12 @@
         </DatePicker>
         <Label Content="Tid" Grid.Column="4" Grid.Row="3"/>
         <ComboBox Name="timeComboBox" Grid.Column="4" Grid.Row="4" VerticalAlignment="Center" IsEditable="False" Margin="5" >
-            <ComboBoxItem Name ="time1" Content = "18.00" />
-            <ComboBoxItem Name ="time2" Content = "18.30" />
+            <ComboBoxItem Name ="time1" Content = "17.00" />
+            <ComboBoxItem Name ="time2" Content = "18.00" />
             <ComboBoxItem Name ="time3" Content = "19.00" />
-            <ComboBoxItem Name ="time4" Content = "19.30" />
-            <ComboBoxItem Name ="time5" Content = "20.00" />
-            <ComboBoxItem Name ="time6" Content = "20.30" />
-            <ComboBoxItem Name ="time7" Content = "21.00" />
-            <ComboBoxItem Name ="time8" Content = "21.30" />
-            <ComboBoxItem Name ="time9" Content = "22.00" />
+            <ComboBoxItem Name ="time4" Content = "20.00" />
+            <ComboBoxItem Name ="time5" Content = "21.00" />
+            <ComboBoxItem Name ="time6" Content = "22.00" />
         </ComboBox>
         <Label Content="Bordsnummer" Grid.Column="6" Grid.Row="3" />
         <ComboBox Name="tableNumberComboBox" Grid.Column="6" Grid.Row="4" VerticalAlignment="Center" IsEditable="False" Margin="5">
@@ -61,8 +58,6 @@
             <ComboBoxItem Name="table5" Content ="5" />
             <ComboBoxItem Name="table6" Content ="6" />
             <ComboBoxItem Name="table7" Content ="7" />
-            <ComboBoxItem Name="table8" Content ="8" />
-            <ComboBoxItem Name="table9" Content ="9" />
         </ComboBox>
 
         <Label Content="Namn" Grid.Column="6" Grid.Row="1" Margin="5"/>

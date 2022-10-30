@@ -37,21 +37,21 @@ namespace Labb_3
         }
 
         //public void MakeReservation() //TableReservation eller void?
-       // {
+        // {
 
 
-            //TableReservation nyBokning = new TableReservation();
-            //bookingList.Add(nyBokning);
-            //skriv nya bokningen till fil
-       // }
+        //TableReservation nyBokning = new TableReservation();
+        //bookingList.Add(nyBokning);
+        //skriv nya bokningen till fil
+        // }
 
-        public void CancelReservation()
-        {
-            /*bookingList.RemoveAt(); *///hämta in index för den som ska bort
-            // ta bort bokningen från filen
-        }
+        //public void CancelReservation()
+        //{
+        //    /*bookingList.RemoveAt(); *///hämta in index för den som ska bort
+        //    ta bort bokningen från filen
+        //}
 
-        
+
 
         //public string CheckNameInput()
         //{
