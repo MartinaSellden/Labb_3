@@ -33,13 +33,11 @@ namespace Labb_3
             InitializeComponent();
             DisplayReservations();
         }
-
         private void DisplayReservations()
         {
             TableReservation.ReadFromFile();
             UpdateReservationListBox();
         } 
-
         private int CheckTableNumberInput()
         {
             string input;
@@ -52,18 +50,15 @@ namespace Labb_3
             input = tableNumberComboBox.Text;
             tableNumber = Convert.ToInt32(input);
             return tableNumber;
-
         }
         private string CheckTimeInput()
         {
-
             string time = timeComboBox.Text.ToString();
             while (timeComboBox.Text== "")
             {
                 MessageBox.Show("Du måste välja en tid för att göra din bokning", "Tid ej vald", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return time;
-
         }
         private DateTime CheckDateInput()
         {
@@ -81,7 +76,6 @@ namespace Labb_3
                     MessageBox.Show("Du kan inte välja ett datum innan dagens datum", "Du kan ej göra bokningar bakåt i tiden", MessageBoxButton.OK, MessageBoxImage.Error);
                     CheckDateInput();
                 }
-
             }
             catch (Exception e)
             {
@@ -108,9 +102,7 @@ namespace Labb_3
                     MessageBox.Show("Ogiltigt format, endast bokstäver!", "Ogiltigt format", MessageBoxButton.OK, MessageBoxImage.Error);
                     CheckNameInput();
                 }
-
             }
-
             catch (Exception e)
             {
 
@@ -133,7 +125,6 @@ namespace Labb_3
             reservationListBox.ItemsSource = null;
             reservationListBox.ItemsSource = TableReservation.tableReservationProperties;
         }
-
         private void Clear()
         {
             datepicker1.SelectedDate=null;
@@ -142,7 +133,6 @@ namespace Labb_3
             tableNumberComboBox.SelectedValue=null;
             GuestsComboBox.SelectedValue=null;
         }
-
         private void reservationButton_Click(object sender, RoutedEventArgs e)
         {
                 TableReservation.ReadFromFile();
@@ -202,7 +192,6 @@ namespace Labb_3
                     DisplayReservations();
                 }
             }
-
         private void RemoveReservation_Click(object sender, RoutedEventArgs e)   //Ändra namn på metoderna
         {
             if (reservationListBox.SelectedItem==null)
@@ -213,7 +202,6 @@ namespace Labb_3
             UpdateReservationListBox();
         }
     }
-
 }
 
 

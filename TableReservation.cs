@@ -22,20 +22,13 @@ namespace Labb_3
         //static List<Restaurant> restaurantsAvailable = new List<Restaurant>();
     
         public TableReservation(string Name, Table table, int numberOfGuests, string Date, string Time)
-        {
-           
+        {      
             this.Name = Name;
             this.table = table;
-            this.NumberOfGuests = numberOfGuests; //kolla att det inte blir fler än 5 gäster vid ett givet bord en given tidpunkt
-            this.Date = Date; //fixa kalender man kan trycka på 
+            this.NumberOfGuests = numberOfGuests; 
+            this.Date = Date;  
             this.Time = Time;
-
-            //var bord = bookingList.Where(TableReservation =>TableReservation.Date == Date&&TableReservation.Time == Time)
-            //           .Select(TableReservation => TableReservation.TableNumber==TableNumber? "Bordet är bokat denna tid": TableNumber)
-            //           .ToList();
-
         }
-
         public static void CreateNewReservation(string date, string name, string time, int tableNumber, int numberOfGuests)
         {
             Table newTable = new Table(tableNumber, numberOfGuests);
@@ -46,27 +39,20 @@ namespace Labb_3
 
             TableReservation.tableReservationProperties.Add(date+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
         }
-
-
         public static void WriteToFile()
         {
-
             try
             {
-
                 using (StreamWriter sw = new StreamWriter("Bokningar.txt", true))
                 {
                     TableReservation.tableReservationProperties.ForEach(reservation => sw.WriteLine(reservation));
-
                 }
-
             }
             catch (Exception e)
             {
-
+                MessageBox.Show(e.Message);
             }
         }
-
         public static void WriteNewFile()
         {
             try
@@ -80,44 +66,44 @@ namespace Labb_3
             }
             catch (Exception e)
             {
-
+                MessageBox.Show(e.Message);
             }
         }
-
         public static void ReadFromFile()
         {
-            string fileName = "Bokningar.txt";
-            TableReservation.tableReservationProperties.Clear();
-            string[] lines = File.ReadAllLines(fileName);
-            TableReservation.tableReservationProperties = lines.ToList();
-
-            string date;
-            string time;
-            int numberOfGuests;
-            string tableNumber;
-            Table table;
-            string name;
-
-            TableReservation.reservationList.Clear();
-
-            foreach (string reservation in TableReservation.tableReservationProperties)
+            try
             {
-                date = reservation.Substring(0, 10);
-                time = reservation.Substring(11, 5);
-                tableNumber = reservation.Substring(17, 1);
-                numberOfGuests = Int32.Parse(reservation.Substring(19, 1));
-                table = new Table(Int32.Parse(tableNumber), numberOfGuests);
-                name = reservation.Substring(21);
+                string fileName = "Bokningar.txt";
+                TableReservation.tableReservationProperties.Clear();
+                string[] lines = File.ReadAllLines(fileName);
+                TableReservation.tableReservationProperties = lines.ToList();
 
-                TableReservation.reservationList.Add(new TableReservation(name, table, numberOfGuests, date, time));
+                string date;
+                string time;
+                int numberOfGuests;
+                string tableNumber;
+                Table table;
+                string name;
 
-            } //sätt try catch för argumentOutOfrangeexception
+                TableReservation.reservationList.Clear();
 
-            // 2022-11-01 20.30 5 2 Martina       exempel
-            // få in parametrarna från listan och göra object till en "reservationList" lista av bokningar. Alltså att reservationList blir vad som finns exakt just nu i filen.
-            //Namn som kan variera i längd bör står sist. 
+                foreach (string reservation in TableReservation.tableReservationProperties)
+                {
+                    date = reservation.Substring(0, 10);
+                    time = reservation.Substring(11, 5);
+                    tableNumber = reservation.Substring(17, 1);
+                    numberOfGuests = Int32.Parse(reservation.Substring(19, 1));
+                    table = new Table(Int32.Parse(tableNumber), numberOfGuests);
+                    name = reservation.Substring(21);
+
+                    TableReservation.reservationList.Add(new TableReservation(name, table, numberOfGuests, date, time));
+                }
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
-
         public static int GetNumberOfReservedSeatsAtSelectedTable(string date, string name, string time, int tableNumber)
         {
             var reservationsWithSameDate = TableReservation.reservationList.Where(reservation => reservation.Date==date)
@@ -232,7 +218,5 @@ namespace Labb_3
 
             return availableTables;
         }
-
     }
-
 }
