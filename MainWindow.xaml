@@ -20,6 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -27,21 +28,26 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="50"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="20"/>
 
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Column="1" Grid.Row="1" FontSize="16" Text="Bokningar" >
 
-        </TextBlock>
-        <Label Name="dateLabel" Content="Datum" Grid.Column="4" Grid.Row="1" Margin="5">
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Restaurang" FontSize="25" FontFamily="Lucida Handwriting" Margin="0,5,0,0"/>
+        <TextBlock Grid.Row="1" Grid.Column="4" Text=".Net" FontSize="36" FontFamily="Cascadia Code ExtraLight" FontWeight="Bold" HorizontalAlignment="Left" Margin="20,0,0,0"/>
+        <TextBlock Grid.Row="1" Grid.Column="6" Text="Alltid glad och mätt!" FontSize="25" FontFamily="Harrington" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+        <TextBlock Grid.Column="1" Grid.Row="3"  Text="Bokningar" Margin="5,10,5,5"/>
+        <Label Name="dateLabel" Content="Datum" Grid.Column="4" Grid.Row="3" Margin="5">
         </Label>
-        <DatePicker Grid.Column="4" Grid.Row="2" Text="Välj datum" Name ="datepicker1" Margin="5">
+        <DatePicker Grid.Column="4" Grid.Row="4" Text="Välj datum" Name ="datepicker1" Margin="5">
         </DatePicker>
-        <Label Content="Tid" Grid.Column="4" Grid.Row="3"/>
-        <ComboBox Name="timeComboBox" Grid.Column="4" Grid.Row="4" VerticalAlignment="Center" IsEditable="False" Margin="5" >
+        <Label Content="Tid" Grid.Column="4" Grid.Row="5"/>
+        <ComboBox Name="timeComboBox" Grid.Column="4" Grid.Row="6" VerticalAlignment="Center" IsEditable="False" Margin="5" >
             <ComboBoxItem Name ="time1" Content = "17.00" />
             <ComboBoxItem Name ="time2" Content = "18.00" />
             <ComboBoxItem Name ="time3" Content = "19.00" />
@@ -49,8 +55,8 @@
             <ComboBoxItem Name ="time5" Content = "21.00" />
             <ComboBoxItem Name ="time6" Content = "22.00" />
         </ComboBox>
-        <Label Content="Bordsnummer" Grid.Column="6" Grid.Row="3" />
-        <ComboBox Name="tableNumberComboBox" Grid.Column="6" Grid.Row="4" VerticalAlignment="Center" IsEditable="False" Margin="5">
+        <Label Content="Bordsnummer" Grid.Column="6" Grid.Row="5" />
+        <ComboBox Name="tableNumberComboBox" Grid.Column="6" Grid.Row="6" VerticalAlignment="Center" IsEditable="False" Margin="5">
             <ComboBoxItem Name="table1" Content ="1" />
             <ComboBoxItem Name="table2" Content ="2" />
             <ComboBoxItem Name="table3" Content ="3" />
@@ -60,30 +66,30 @@
             <ComboBoxItem Name="table7" Content ="7" />
         </ComboBox>
 
-        <Label Content="Namn" Grid.Column="6" Grid.Row="1" Margin="5"/>
-        <TextBox Name ="nameTextBox" Grid.Column="6" Grid.Row="2" Margin="5">
+        <Label Content="Namn" Grid.Column="6" Grid.Row="3" Margin="5"/>
+        <TextBox Name ="nameTextBox" Grid.Column="6" Grid.Row="4" Margin="5">
         </TextBox>
 
-        <StackPanel Grid.Column="1" Grid.Row="2" Grid.RowSpan="11" Background="Linen">
-            <ListBox Name="reservationListBox" Grid.Column="1" Grid.Row ="3" Grid.RowSpan="11" Margin="8,8,8,8">
+        <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="13" Background="Linen">
+            <ListBox Name="reservationListBox" Grid.Column="1" Grid.Row ="5" Grid.RowSpan="13" Margin="8,8,8,8">
             </ListBox>
         </StackPanel>
-        <Label Name="numberOfGuestsLabel" Content="Antal personer" Grid.Column="4" Grid.Row="7" Margin="5,0,5,0 "/>
-        <ComboBox Name="GuestsComboBox" Grid.Column="4" Grid.Row="8" Margin="5" >
+        <Label Name="numberOfGuestsLabel" Content="Antal personer" Grid.Column="4" Grid.Row="9" Margin="5,0,5,0 "/>
+        <ComboBox Name="GuestsComboBox" Grid.Column="4" Grid.Row="10" Margin="5" >
             <ComboBoxItem Name="item1" Content ="1" />
             <ComboBoxItem Name="item2" Content ="2" />
             <ComboBoxItem Name="item3" Content ="3" />
             <ComboBoxItem Name="item4" Content ="4" />
             <ComboBoxItem Name="item5" Content ="5" />
         </ComboBox>
-        <StackPanel Grid.Column="4" Grid.Row ="10" Grid.RowSpan="5" Background="Linen">
-            <Button Name="reservationButton" Content="Boka" Grid.Column="4" Grid.Row="7" Height="30" Margin="5,5,5,10" VerticalAlignment="Top" Click="reservationButton_Click">
+        <StackPanel Grid.Column="4" Grid.Row ="12" Grid.RowSpan="4" Background="Linen" Margin="0,30,0,0">
+            <Button Name="reservationButton" Content="Boka" Grid.Column="4" Grid.Row="8" Height="30" Margin="5,5,5,10" VerticalAlignment="Top" Click="reservationButton_Click">
             </Button>
-            <Button Name="RemoveReservation" Content="Avboka" Grid.Column="4" Grid.Row="8" Height="30" Margin="5,0,5,5" VerticalAlignment="Top" Click="RemoveReservation_Click">
+            <Button Name="RemoveReservation" Content="Avboka" Grid.Column="4" Grid.Row="9" Height="30" Margin="5,0,5,5" VerticalAlignment="Top" Click="RemoveReservation_Click">
             </Button>
         </StackPanel>
-        
 
     </Grid>
+
 
 </Window>
