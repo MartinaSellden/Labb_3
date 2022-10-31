@@ -16,7 +16,7 @@ namespace Labb_3
         {
             Number = number;
            
-            this.NumberOfFreeSeats = numberOfGuests;
+            this.NumberOfFreeSeats = 5 - numberOfGuests;
 
         }
     }
