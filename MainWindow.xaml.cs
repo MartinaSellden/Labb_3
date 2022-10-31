@@ -34,16 +34,11 @@ namespace Labb_3
             DisplayReservations();
         }
 
-
         private void DisplayReservations()
         {
-
             TableReservation.ReadFromFile();
             UpdateReservationListBox();
-
-        }
-
-         
+        } 
 
         private int CheckTableNumberInput()
         {
@@ -148,33 +143,55 @@ namespace Labb_3
             GuestsComboBox.SelectedValue=null;
         }
 
-        public void MakeReservation()
+        private void reservationButton_Click(object sender, RoutedEventArgs e)
         {
+                TableReservation.ReadFromFile();
 
-            TableReservation.ReadFromFile();
+                DateTime dateInput = CheckDateInput();
+                string date = dateInput.ToShortDateString();
 
-            DateTime dateInput = CheckDateInput();
-            string date = dateInput.ToShortDateString();
+                string name = CheckNameInput();
 
-            string name = CheckNameInput();
+                string time = CheckTimeInput();
 
-            string time = CheckTimeInput();
+                int tableNumber = CheckTableNumberInput();
 
-            int tableNumber = CheckTableNumberInput();
+                int numberOfGuests = CheckNumberOfGuests();
 
-            int numberOfGuests = CheckNumberOfGuests();
+                int freeSeats = 5;
 
-            int freeSeats = 5;
+                int reservedSeats = TableReservation.GetNumberOfReservedSeatsAtSelectedTable(date, name, time, tableNumber);
 
-            int reservedSeats = TableReservation.GetNumberOfReservedSeatsAtSelectedTable(date, name, time, tableNumber);
+                //string availableTables = GetFreeTables(date, name, time, tableNumber,numberOfGuests);
 
-            //string availableTables = GetFreeTables(date, name, time, tableNumber,numberOfGuests);
+                if (reservedSeats!=0)
+                {
+                    freeSeats = TableReservation.GetNumberOfFreeSeatsAtSelectedTable(date, name, time, tableNumber);
 
-            if (reservedSeats!=0)
-            {
-                freeSeats = TableReservation.GetNumberOfFreeSeatsAtSelectedTable(date, name, time, tableNumber);
+                    if (freeSeats>=numberOfGuests)
+                    {
+                        TableReservation.CreateNewReservation(date, name, time, tableNumber, numberOfGuests);
 
-                if (freeSeats>=numberOfGuests)
+                        TableReservation.WriteToFile();
+
+                        Clear();
+
+                        DisplayReservations();
+                    }
+                    else if (freeSeats<=0)
+                    {
+                        MessageBox.Show("Det finns inga lediga platser vid bord nummer "+tableNumber+", vänligen välj ett annat bord!"
+                            /*"Bord med lediga platser vald tid är "/*+availableTables+""*/, "Inga lediga platser vid bord "+tableNumber, MessageBoxButton.OK, MessageBoxImage.Error);
+                        //eventuellt kolla vilka bord som har lediga platser de tiderna och föreslå.
+                    }
+                    else
+                    {
+                        MessageBox.Show("Det finns "+freeSeats+" platser kvar vid bord "+tableNumber+". Justera antalet personer " +
+                            "du vill boka för eller välj annat bord."/* Bord med lediga platser vald tid är: "*//*+availableTables+""*/, "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error);
+                        //eventuellt kolla vilka bord som har lediga platser de tiderna 
+                    }
+                }
+                else
                 {
                     TableReservation.CreateNewReservation(date, name, time, tableNumber, numberOfGuests);
 
@@ -184,39 +201,8 @@ namespace Labb_3
 
                     DisplayReservations();
                 }
-                else if (freeSeats<=0)
-                {
-                    MessageBox.Show("Det finns inga lediga platser vid bord nummer "+tableNumber+", vänligen välj ett annat bord!"
-                        /*"Bord med lediga platser vald tid är "/*+availableTables+""*/, "Inga lediga platser vid bord "+tableNumber, MessageBoxButton.OK, MessageBoxImage.Error);
-                    //eventuellt kolla vilka bord som har lediga platser de tiderna och föreslå.
-                }
-                else
-                {
-                    MessageBox.Show("Det finns "+freeSeats+" platser kvar vid bord "+tableNumber+". Justera antalet personer " +
-                        "du vill boka för eller välj annat bord."/* Bord med lediga platser vald tid är: "*//*+availableTables+""*/, "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //eventuellt kolla vilka bord som har lediga platser de tiderna 
-                }
-
-
             }
-            else
-            {
-                TableReservation.CreateNewReservation(date, name, time, tableNumber, numberOfGuests);
 
-                TableReservation.WriteToFile();
-
-                Clear();
-
-                DisplayReservations();
-            }
-        }
-
-
-        private void reservationButton_Click(object sender, RoutedEventArgs e)
-        {
-            MakeReservation();
-
-        }
         private void RemoveReservation_Click(object sender, RoutedEventArgs e)   //Ändra namn på metoderna
         {
             if (reservationListBox.SelectedItem==null)
