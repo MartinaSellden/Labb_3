@@ -304,17 +304,17 @@ namespace Labb_3
             List<Table> otherTablesWithReservedSeats = new List<Table>();
             var otherTablesAtSameTime = numbersOfTablesAvailable;
 
-            for (int i = 0; i<listOfAvailableTables.Count; i++)
+            for (int i = 0; i<reservedTablesAtSameTime.Count; i++)
             {
                 listOfAvailableTables = numbersOfTablesAvailable.Where(table => table!=reservedTablesAtSameTime[i]).Select(table => table).ToList();
                 otherTablesAtSameTime=numbersOfTablesAvailable.Where(number => number==reservedTablesAtSameTime[i]).Select(number => number).ToList();    
             }
 
-            var tablesOtherThanChosenTable = otherTablesAtSameTime.Where(table => table!=tableNumber).Select(table => table).ToList();
-            var tablesOtherThanChosenTableWithoutDuplicates = tablesOtherThanChosenTable.Distinct();
-            tablesOtherThanChosenTable.ForEach(table => otherTablesWithReservedSeats.Add(new Table(table, GetNumberOfReservedSeatsAtSelectedTable(date, name, time, tableNumber))));
+            var tablesOtherThanChosenTable = otherTablesAtSameTime.Where(table => table!=tableNumber).Select(table => table).Distinct().ToList();
 
-            otherTablesWithReservedSeats.ForEach(table => table.NumberOfFreeSeats=GetNumberOfFreeSeatsAtSelectedTable(date, name, time, tableNumber));
+            tablesOtherThanChosenTable.ForEach(table => otherTablesWithReservedSeats.Add(new Table(table, GetNumberOfFreeSeatsAtSelectedTable(date, name, time, table))));
+
+            otherTablesWithReservedSeats.Select(table=>table).ToList();
 
             var tablesWithEnoughSeats = otherTablesWithReservedSeats.Where(table => table.NumberOfFreeSeats>=numberOfGuests).Select(table => table.Number).ToList();
             listOfAvailableTables.AddRange(tablesWithEnoughSeats);
@@ -325,7 +325,7 @@ namespace Labb_3
 
             //numbersOfTablesAvailable.Where(number => number!=tableNumber).Select(number => number).ToList();
 
-            string availableTables = orderedlistOfAvailableTables.Aggregate("", (allTables, next) => allTables +","+ next.ToString()); //kolla om den fungerar eller fixa
+            string availableTables = orderedlistOfAvailableTables.Aggregate("", (allTables, next) => allTables +" "+ next.ToString()); //kolla om den fungerar eller fixa
 
             return availableTables;
         }
@@ -367,14 +367,14 @@ namespace Labb_3
                 }
                 else if (freeSeats<=0)
                 {
-                    MessageBox.Show("Det finns inga lediga platser vid bord nummer "+tableNumber+", vänligen välj ett annat bord!\n" +
-                        "Bord med lediga platser vald tid är "/*+availableTables+""*/, "Inga lediga platser vid bord "+tableNumber, MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Det finns inga lediga platser vid bord nummer "+tableNumber+", vänligen välj ett annat bord!"
+                        /*"Bord med lediga platser vald tid är "/*+availableTables+""*/, "Inga lediga platser vid bord "+tableNumber, MessageBoxButton.OK, MessageBoxImage.Error);
                     //eventuellt kolla vilka bord som har lediga platser de tiderna och föreslå.
                 }
                 else
                 {
                     MessageBox.Show("Det finns "+freeSeats+" platser kvar vid bord "+tableNumber+". Justera antalet personer " +
-                        "du vill boka för eller välj annat bord. Bord med lediga platser vald tid är: "/*+availableTables+*//*""*/, "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error);
+                        "du vill boka för eller välj annat bord."/* Bord med lediga platser vald tid är: "*//*+availableTables+""*/, "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error);
                     //eventuellt kolla vilka bord som har lediga platser de tiderna 
                 }
 
