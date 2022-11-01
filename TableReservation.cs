@@ -86,36 +86,38 @@ namespace Labb_3
 
         public static void ReadFromFile()
         {
-            string fileName = "Bokningar.txt";
-            TableReservation.tableReservationProperties.Clear();
-            string[] lines = File.ReadAllLines(fileName);
-            TableReservation.tableReservationProperties = lines.ToList();
-
-            string date;
-            string time;
-            int numberOfGuests;
-            string tableNumber;
-            Table table;
-            string name;
-
-            TableReservation.reservationList.Clear();
-
-            foreach (string reservation in TableReservation.tableReservationProperties)
+            try
             {
-                date = reservation.Substring(0, 10);
-                time = reservation.Substring(11, 5);
-                tableNumber = reservation.Substring(17, 1);
-                numberOfGuests = Int32.Parse(reservation.Substring(19, 1));
-                table = new Table(Int32.Parse(tableNumber), numberOfGuests);
-                name = reservation.Substring(21);
+                string fileName = "Bokningar.txt";
+                TableReservation.tableReservationProperties.Clear();
+                string[] lines = File.ReadAllLines(fileName);
+                TableReservation.tableReservationProperties = lines.ToList();
 
-                TableReservation.reservationList.Add(new TableReservation(name, table, numberOfGuests, date, time));
+                string date;
+                string time;
+                int numberOfGuests;
+                string tableNumber;
+                Table table;
+                string name;
 
-            } //sätt try catch för argumentOutOfrangeexception
+                TableReservation.reservationList.Clear();
 
-            // 2022-11-01 20.30 5 2 Martina       exempel
-            // få in parametrarna från listan och göra object till en "reservationList" lista av bokningar. Alltså att reservationList blir vad som finns exakt just nu i filen.
-            //Namn som kan variera i längd bör står sist. 
+                foreach (string reservation in TableReservation.tableReservationProperties)
+                {
+                    date = reservation.Substring(0, 10);
+                    time = reservation.Substring(11, 5);
+                    tableNumber = reservation.Substring(17, 1);
+                    numberOfGuests = Int32.Parse(reservation.Substring(19, 1));
+                    table = new Table(Int32.Parse(tableNumber), numberOfGuests);
+                    name = reservation.Substring(21);
+
+                    TableReservation.reservationList.Add(new TableReservation(name, table, numberOfGuests, date, time));
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public static int GetNumberOfReservedSeatsAtSelectedTable(string date, string name, string time, int tableNumber)
