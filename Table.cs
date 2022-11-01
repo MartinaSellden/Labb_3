@@ -9,7 +9,6 @@ namespace Labb_3
     internal class Table
     {
        public int Number { get; set; }
-        //public int NumberOfReservedSeats { get; set; }
        public int NumberOfFreeSeats { get; set; }
 
         public Table(int number, int numberOfGuests)

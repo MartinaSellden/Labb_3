@@ -71,8 +71,9 @@
         </TextBox>
 
         <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="13" Background="Linen">
-            <ListBox Name="reservationListBox" Grid.Column="1" Grid.Row ="5" Grid.RowSpan="13" Margin="8,8,8,8">
-            </ListBox>
+            <ListView x:Name="reservationListView" Grid.Row="5" Grid.Column="1" Grid.RowSpan="13" Margin="10" DisplayMemberPath="DisplayData"/>
+            <!--<ListBox Name="reservationListBox" Grid.Column="1" Grid.Row ="5" Grid.RowSpan="13" Margin="8,8,8,8">
+            </ListBox>-->
         </StackPanel>
         <Label Name="numberOfGuestsLabel" Content="Antal personer" Grid.Column="4" Grid.Row="9" Margin="5,0,5,0 "/>
         <ComboBox Name="GuestsComboBox" Grid.Column="4" Grid.Row="10" Margin="5" >

@@ -20,6 +20,7 @@ using System.IO;
 using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using System.Security.Cryptography;
+using System.Text.Json;
 
 namespace Labb_3
 {
@@ -28,17 +29,18 @@ namespace Labb_3
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static List<TableReservation> reservationList = new List<TableReservation>();
         public MainWindow()
         {
             InitializeComponent();
-            DisplayReservations();
+            //DisplayReservations();
         }
 
-        private void DisplayReservations()
+        private async void DisplayReservations()
         {
-            TableReservation.ReadFromFile();
+            await DeserializeList();
             UpdateReservationListBox();
-        } 
+        }
 
         private int CheckTableNumberInput()
         {
@@ -130,8 +132,8 @@ namespace Labb_3
 
         private void UpdateReservationListBox()
         {
-            reservationListBox.ItemsSource = null;
-            reservationListBox.ItemsSource = TableReservation.tableReservationProperties;
+            reservationListView.ItemsSource = null;
+            reservationListView.ItemsSource = TableReservation.reservationList;
         }
 
         private void Clear()
@@ -143,72 +145,87 @@ namespace Labb_3
             GuestsComboBox.SelectedValue=null;
         }
 
-        private void reservationButton_Click(object sender, RoutedEventArgs e)
+        private async Task SerializeList()
         {
-                TableReservation.ReadFromFile();
+            using (FileStream fileStream = File.Create("TableReservation.json"))
+            {
+                await JsonSerializer.SerializeAsync(fileStream, TableReservation.reservationList);
+                await fileStream.DisposeAsync();
+            }
+        }
+        private async Task DeserializeList()
+        {
+            using (FileStream fileStream = File.OpenRead("TableReservation.json"))
+            {
+                TableReservation.reservationList = await JsonSerializer.DeserializeAsync<List<TableReservation>>(fileStream);
+            }
+        }
+        private async void reservationButton_Click(object sender, RoutedEventArgs e)
+        {
+            //await DeserializeList();
 
-                DateTime dateInput = CheckDateInput();
-                string date = dateInput.ToShortDateString();
+            DateTime dateInput = CheckDateInput();
+            string date = dateInput.ToShortDateString();
 
-                string name = CheckNameInput();
+            string name = CheckNameInput();
 
-                string time = CheckTimeInput();
+            string time = CheckTimeInput();
 
-                int tableNumber = CheckTableNumberInput();
+            int tableNumber = CheckTableNumberInput();
 
-                int numberOfGuests = CheckNumberOfGuests();
+            int numberOfGuests = CheckNumberOfGuests();
 
-                int freeSeats = 5;
+            int freeSeats = 5;
 
-                int reservedSeats = TableReservation.GetNumberOfReservedSeatsAtSelectedTable(date, name, time, tableNumber);
+            int reservedSeats = TableReservation.GetNumberOfReservedSeatsAtSelectedTable(date, name, time, tableNumber);
 
-                //string availableTables = GetFreeTables(date, name, time, tableNumber,numberOfGuests);
+            //string availableTables = GetFreeTables(date, name, time, tableNumber,numberOfGuests);
 
-                if (reservedSeats!=0)
-                {
-                    freeSeats = TableReservation.GetNumberOfFreeSeatsAtSelectedTable(date, name, time, tableNumber);
+            if (reservedSeats!=0)
+            {
+                freeSeats = TableReservation.GetNumberOfFreeSeatsAtSelectedTable(date, name, time, tableNumber);
 
-                    if (freeSeats>=numberOfGuests)
-                    {
-                        TableReservation.CreateNewReservation(date, name, time, tableNumber, numberOfGuests);
-
-                        TableReservation.WriteToFile();
-
-                        Clear();
-
-                        DisplayReservations();
-                    }
-                    else if (freeSeats<=0)
-                    {
-                        MessageBox.Show("Det finns inga lediga platser vid bord nummer "+tableNumber+", vänligen välj ett annat bord!"
-                            /*"Bord med lediga platser vald tid är "/*+availableTables+""*/, "Inga lediga platser vid bord "+tableNumber, MessageBoxButton.OK, MessageBoxImage.Error);
-                        //eventuellt kolla vilka bord som har lediga platser de tiderna och föreslå.
-                    }
-                    else
-                    {
-                        MessageBox.Show("Det finns "+freeSeats+" platser kvar vid bord "+tableNumber+". Justera antalet personer " +
-                            "du vill boka för eller välj annat bord."/* Bord med lediga platser vald tid är: "*//*+availableTables+""*/, "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error);
-                        //eventuellt kolla vilka bord som har lediga platser de tiderna 
-                    }
-                }
-                else
+                if (freeSeats>=numberOfGuests)
                 {
                     TableReservation.CreateNewReservation(date, name, time, tableNumber, numberOfGuests);
 
-                    TableReservation.WriteToFile();
+                    await SerializeList();
 
                     Clear();
 
                     DisplayReservations();
                 }
+                else if (freeSeats<=0)
+                {
+                    MessageBox.Show("Det finns inga lediga platser vid bord nummer "+tableNumber+", vänligen välj ett annat bord!"
+                        /*"Bord med lediga platser vald tid är "/*+availableTables+""*/, "Inga lediga platser vid bord "+tableNumber, MessageBoxButton.OK, MessageBoxImage.Error);
+                    //eventuellt kolla vilka bord som har lediga platser de tiderna och föreslå.
+                }
+                else
+                {
+                    MessageBox.Show("Det finns "+freeSeats+" platser kvar vid bord "+tableNumber+". Justera antalet personer " +
+                        "du vill boka för eller välj annat bord."/* Bord med lediga platser vald tid är: "*//*+availableTables+""*/, "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //eventuellt kolla vilka bord som har lediga platser de tiderna 
+                }
             }
+            else
+            {
+                TableReservation.CreateNewReservation(date, name, time, tableNumber, numberOfGuests);
+
+                await SerializeList();
+
+                Clear();
+
+                DisplayReservations();
+            }
+        }
 
         private void RemoveReservation_Click(object sender, RoutedEventArgs e)   //Ändra namn på metoderna
         {
-            if (reservationListBox.SelectedItem==null)
+            if (reservationListView.SelectedItem==null)
                 return;
-            TableReservation.tableReservationProperties.Remove((string)reservationListBox.SelectedItem);
-            TableReservation.WriteNewFile();
+            TableReservation.reservationList.Remove(reservationListView.SelectedItem);
+            //TableReservation.WriteNewFile();
             DisplayReservations();
             UpdateReservationListBox();
         }
