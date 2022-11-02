@@ -22,14 +22,12 @@ namespace Labb_3
         public static List<TableReservation> reservationList = new List<TableReservation>();
     
         public TableReservation(string Name, Table table, int numberOfGuests, DateTime Date, string Time)
-        {
-           
+        { 
             this.Name = Name;
             this.table = table;
             this.NumberOfGuests = numberOfGuests;
             this.Date = Date; 
             this.Time = Time;
-
         }
 
         public static void CreateNewReservation(DateTime date, string name, string time, int tableNumber, int numberOfGuests)
@@ -42,24 +40,18 @@ namespace Labb_3
 
             TableReservation.tableReservationProperties.Add(date.ToShortDateString()+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
         }
-
-
         public static void WriteToFile()
         {
-
             try
             {
-
                 using (StreamWriter sw = new StreamWriter("Bokningar.txt", true))
                 {
                     TableReservation.tableReservationProperties.ForEach(reservation => sw.WriteLine(reservation));
-
                 }
-
             }
             catch (Exception e)
             {
-
+                throw;
             }
         }
 
@@ -72,11 +64,10 @@ namespace Labb_3
                 {
                     TableReservation.tableReservationProperties.ForEach(reservation => sw.WriteLine(reservation));
                 }
-
             }
             catch (Exception e)
             {
-
+                throw;
             }
         }
 
@@ -111,11 +102,10 @@ namespace Labb_3
 
                     reservationList.Add(new TableReservation(name, table, numberOfGuests, date, time));
                 }
-
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                throw;
             }
         }
 
@@ -147,7 +137,6 @@ namespace Labb_3
             {
                 sumOfReservedSeats = sumOfReservedSeats + reservedSeatsPerReservation[i];
             }
-
             return sumOfReservedSeats;
         }
 
