@@ -167,9 +167,9 @@ namespace Labb_3
 
                 //nameTextBox.Text=="" ||
 
-                if (datepicker1==null || date<DateTime.Now || !r.IsMatch(nameTextBox.Text)|| timeComboBox.SelectedItem == null || tableNumberComboBox.SelectedItem == null || GuestsComboBox.SelectedItem==null)
+                if (datepicker1.SelectedDate==null || date<DateTime.Now || !r.IsMatch(nameTextBox.Text)|| timeComboBox.SelectedItem == null || tableNumberComboBox.SelectedItem == null || GuestsComboBox.SelectedItem==null)
                 {
-                    if (datepicker1==null)
+                    if (datepicker1.SelectedDate==null)
                     {
                         MessageBox.Show("Du behöver välja ett datum för att slutföra bokningen", "Datum ej valt", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
