@@ -36,11 +36,9 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="20"/>
-
-
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Restaurang" FontSize="25" FontFamily="Cascadia Code ExtraLight" Margin="0,12,0,0"/>
-        <TextBlock Grid.Row="1" Grid.Column="4" Text=".Net" FontSize="38" FontFamily="Cascadia Code ExtraLight" HorizontalAlignment="Center" Margin="-10,3,0,0"/>
+        <TextBlock Grid.Row="1" Grid.Column="4" Text=".Net" FontSize="38" FontFamily="Cascadia Code ExtraLight" HorizontalAlignment="Center" Margin="-12,3,0,0"/>
         <TextBlock Grid.Row="1" Grid.Column="6" Text="Alltid glad och mätt!" FontSize="19" FontFamily="Cascadia Code ExtraLight" HorizontalAlignment="Center" Margin="0,15,0,0"/>
         <TextBlock Grid.Column="1" Grid.Row="3"  Text="Bokningar" Margin="5,10,5,5"/>
         <Label Name="dateLabel" Content="Datum" Grid.Column="4" Grid.Row="3" Margin="5">
@@ -72,7 +70,7 @@
         </TextBox>
 
         <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="13" Background="Linen">
-            <ListBox Name="reservationListBox" Grid.Column="1" Grid.Row ="5" Grid.RowSpan="13" Margin="8,8,8,8">
+            <ListBox Name="reservationListBox" Margin="8,8,8,8">
             </ListBox>
         </StackPanel>
         <Label Name="numberOfGuestsLabel" Content="Antal personer" Grid.Column="4" Grid.Row="9" Margin="5,0,5,0 "/>
@@ -84,9 +82,9 @@
             <ComboBoxItem Name="item5" Content ="5" />
         </ComboBox>
         <StackPanel Grid.Column="4" Grid.Row ="12" Grid.RowSpan="4" Background="Linen" Margin="0,30,0,0">
-            <Button Name="reservationButton" Content="Boka" Grid.Column="4" Grid.Row="8" Height="30" Margin="5,5,5,10" VerticalAlignment="Top" Click="reservationButton_Click">
+            <Button Name="reservationBtn" Content="Boka" Grid.Column="4" Grid.Row="8" Height="30" Margin="5,5,5,10" VerticalAlignment="Top" Click="MakeReservation">
             </Button>
-            <Button Name="RemoveReservation" Content="Avboka" Grid.Column="4" Grid.Row="9" Height="30" Margin="5,0,5,5" VerticalAlignment="Top" Click="RemoveReservation_Click">
+            <Button Name="RemoveReservationBtn" Content="Avboka" Grid.Column="4" Grid.Row="9" Height="30" Margin="5,0,5,5" VerticalAlignment="Top" Click="RemoveReservation">
             </Button>
         </StackPanel>
 

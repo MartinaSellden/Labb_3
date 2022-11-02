@@ -143,7 +143,7 @@ namespace Labb_3
             GuestsComboBox.SelectedValue=null;
         }
 
-        private void reservationButton_Click(object sender, RoutedEventArgs e)
+        private void MakeReservation(object sender, RoutedEventArgs e)
         {
                 TableReservation.ReadFromFile();
 
@@ -202,7 +202,7 @@ namespace Labb_3
                 }
             }
 
-        private void RemoveReservation_Click(object sender, RoutedEventArgs e)   //Ändra namn på metoderna
+        private void RemoveReservation(object sender, RoutedEventArgs e)   //Ändra namn på metoderna
         {
             if (reservationListBox.SelectedItem==null)
                 return;
