@@ -147,8 +147,7 @@ namespace Labb_3
         {
                 TableReservation.ReadFromFile();
 
-                DateTime dateInput = CheckDateInput();
-                string date = dateInput.ToShortDateString();
+                DateTime date = CheckDateInput();
 
                 string name = CheckNameInput();
 
@@ -162,7 +161,7 @@ namespace Labb_3
 
                 int reservedSeats = TableReservation.GetNumberOfReservedSeatsAtSelectedTable(date, name, time, tableNumber);
 
-                //string availableTables = GetFreeTables(date, name, time, tableNumber,numberOfGuests);
+                //string availableTables = GetFreeTables(date, name, time, tableNumber, numberOfGuests);
 
                 if (reservedSeats!=0)
                 {

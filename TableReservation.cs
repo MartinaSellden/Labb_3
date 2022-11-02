@@ -5,13 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows;
+using System.Windows.Navigation;
+using System.Runtime.CompilerServices;
 
 namespace Labb_3
 {
     internal class TableReservation
     {
         public string Name { get; set; }
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
         public string Time { get; set; }
         public Table table { get; set; }  
         
@@ -19,24 +21,19 @@ namespace Labb_3
         
         public static List<string> tableReservationProperties = new List<string>();
         public static List<TableReservation> reservationList = new List<TableReservation>();
-        //static List<Restaurant> restaurantsAvailable = new List<Restaurant>();
     
-        public TableReservation(string Name, Table table, int numberOfGuests, string Date, string Time)
+        public TableReservation(string Name, Table table, int numberOfGuests, DateTime Date, string Time)
         {
            
             this.Name = Name;
             this.table = table;
-            this.NumberOfGuests = numberOfGuests; //kolla att det inte blir fler än 5 gäster vid ett givet bord en given tidpunkt
-            this.Date = Date; //fixa kalender man kan trycka på 
+            this.NumberOfGuests = numberOfGuests;
+            this.Date = Date; 
             this.Time = Time;
-
-            //var bord = bookingList.Where(TableReservation =>TableReservation.Date == Date&&TableReservation.Time == Time)
-            //           .Select(TableReservation => TableReservation.TableNumber==TableNumber? "Bordet är bokat denna tid": TableNumber)
-            //           .ToList();
 
         }
 
-        public static void CreateNewReservation(string date, string name, string time, int tableNumber, int numberOfGuests)
+        public static void CreateNewReservation(DateTime date, string name, string time, int tableNumber, int numberOfGuests)
         {
             Table newTable = new Table(tableNumber, numberOfGuests);
 
@@ -44,7 +41,7 @@ namespace Labb_3
 
             TableReservation.tableReservationProperties.Clear();
 
-            TableReservation.tableReservationProperties.Add(date+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
+            TableReservation.tableReservationProperties.Add(date.ToShortDateString()+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
         }
 
 
@@ -89,30 +86,33 @@ namespace Labb_3
             try
             {
                 string fileName = "Bokningar.txt";
-                TableReservation.tableReservationProperties.Clear();
+                tableReservationProperties.Clear();
                 string[] lines = File.ReadAllLines(fileName);
-                TableReservation.tableReservationProperties = lines.ToList();
+                tableReservationProperties = lines.ToList();
 
-                string date;
+                string dateFromFile;
+                DateTime date;
                 string time;
                 int numberOfGuests;
                 string tableNumber;
                 Table table;
                 string name;
 
-                TableReservation.reservationList.Clear();
+                reservationList.Clear();
 
-                foreach (string reservation in TableReservation.tableReservationProperties)
+                foreach (string reservation in tableReservationProperties)
                 {
-                    date = reservation.Substring(0, 10);
+                    dateFromFile = reservation.Substring(0, 10);
+                    date = DateTime.Parse(dateFromFile);
                     time = reservation.Substring(11, 5);
                     tableNumber = reservation.Substring(17, 1);
                     numberOfGuests = Int32.Parse(reservation.Substring(19, 1));
                     table = new Table(Int32.Parse(tableNumber), numberOfGuests);
                     name = reservation.Substring(21);
 
-                    TableReservation.reservationList.Add(new TableReservation(name, table, numberOfGuests, date, time));
+                    reservationList.Add(new TableReservation(name, table, numberOfGuests, date, time));
                 }
+
             }
             catch (Exception e)
             {
@@ -120,7 +120,7 @@ namespace Labb_3
             }
         }
 
-        public static int GetNumberOfReservedSeatsAtSelectedTable(string date, string name, string time, int tableNumber)
+        public static int GetNumberOfReservedSeatsAtSelectedTable(DateTime date, string name, string time, int tableNumber)
         {
             var reservationsWithSameDate = TableReservation.reservationList.Where(reservation => reservation.Date==date)
                                                                            .Select(reservation => reservation)
@@ -152,7 +152,7 @@ namespace Labb_3
             return sumOfReservedSeats;
         }
 
-        public static int GetNumberOfFreeSeatsAtSelectedTable(string date, string name, string time, int tableNumber)
+        public static int GetNumberOfFreeSeatsAtSelectedTable(DateTime date, string name, string time, int tableNumber)
         {
             var reservationsWithSameDate = TableReservation.reservationList.Where(reservation => reservation.Date==date)
                                                                            .Select(reservation => reservation)
@@ -186,7 +186,25 @@ namespace Labb_3
             return sumOfFreeSeats-sumOfReservedSeats;
         }
 
-        string GetFreeTables(string date, string name, string time, int tableNumber, int numberOfGuests)
+        void RemoveOldReservations()
+        {
+
+            //var reservationsInThePast = reservationList.Where(reservation => reservation.Date<DateTime.Now).Select(reservation => reservation).ToList();
+
+            //for (int i = 0; i<reservationsInThePast.Count; i++)
+            //{
+            //    reservationList.Remove(reservationsInThePast[i]);
+            //}
+
+            //tableReservationProperties.Clear();
+
+            //foreach (var reservation in reservationList)
+            //{
+            //    string listItem = reservation.Date.ToShortDateString()+" "+reservation.Time+" "+reservation.table.Number+" "+reservation.NumberOfGuests;
+            //    tableReservationProperties.Add(listItem);
+            //}
+        }
+        string GetFreeTables(DateTime date, string name, string time, int tableNumber, int numberOfGuests)
         {
             //Gå igenom ordentligt och kolla varför det inte fungerar
 

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb_3"
         mc:Ignorable="d"
-        Title="Bokningssystem" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="Bokningssystem" Height="525" Width="875">
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -38,9 +39,9 @@
 
 
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="Restaurang" FontSize="25" FontFamily="Lucida Handwriting" Margin="0,5,0,0"/>
-        <TextBlock Grid.Row="1" Grid.Column="4" Text=".Net" FontSize="36" FontFamily="Cascadia Code ExtraLight" FontWeight="Bold" HorizontalAlignment="Left" Margin="20,0,0,0"/>
-        <TextBlock Grid.Row="1" Grid.Column="6" Text="Alltid glad och mätt!" FontSize="25" FontFamily="Harrington" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Restaurang" FontSize="25" FontFamily="Cascadia Code ExtraLight" Margin="0,12,0,0"/>
+        <TextBlock Grid.Row="1" Grid.Column="4" Text=".Net" FontSize="38" FontFamily="Cascadia Code ExtraLight" HorizontalAlignment="Center" Margin="-10,3,0,0"/>
+        <TextBlock Grid.Row="1" Grid.Column="6" Text="Alltid glad och mätt!" FontSize="19" FontFamily="Cascadia Code ExtraLight" HorizontalAlignment="Center" Margin="0,15,0,0"/>
         <TextBlock Grid.Column="1" Grid.Row="3"  Text="Bokningar" Margin="5,10,5,5"/>
         <Label Name="dateLabel" Content="Datum" Grid.Column="4" Grid.Row="3" Margin="5">
         </Label>
