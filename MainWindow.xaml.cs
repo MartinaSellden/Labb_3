@@ -171,12 +171,20 @@ namespace Labb_3
 
         private void RemoveReservation(object sender, RoutedEventArgs e)   //Ändra namn på metoderna
         {
-            if (reservationListBox.SelectedItem==null)
-                return;
-            TableReservation.tableReservationProperties.Remove((string)reservationListBox.SelectedItem);
-            TableReservation.WriteNewFile();
-            DisplayReservations();
-            UpdateReservationListBox();
+            try
+            {
+                if (reservationListBox.SelectedItem==null)
+                    return;
+                TableReservation.tableReservationProperties.Remove((string)reservationListBox.SelectedItem);
+                TableReservation.WriteNewFile();
+                DisplayReservations();
+                UpdateReservationListBox();
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
     }
 }
