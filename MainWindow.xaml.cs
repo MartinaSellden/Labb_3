@@ -33,13 +33,11 @@ namespace Labb_3
             InitializeComponent();
             DisplayReservations();
         }
-
         private void DisplayReservations()
         {
             TableReservation.ReadFromFile();
             UpdateReservationListBox();
         }
-
         private void UpdateReservationListBox()
         {
             reservationListBox.ItemsSource = null;
@@ -168,7 +166,6 @@ namespace Labb_3
                 MessageBox.Show(ex.Message);
             }
         }
-
         private void RemoveReservation(object sender, RoutedEventArgs e)   //Ändra namn på metoderna
         {
             try
