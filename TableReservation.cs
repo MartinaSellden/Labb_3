@@ -15,8 +15,7 @@ namespace Labb_3
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public string Time { get; set; }
-        public Table table { get; set; }  
-        
+        public Table table { get; set; }        
         public int NumberOfGuests { get; set; }
         
         public static List<string> tableReservationProperties = new List<string>();
