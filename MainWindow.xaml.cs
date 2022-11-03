@@ -28,12 +28,13 @@ namespace Labb_3
     /// </summary>
     public partial class MainWindow : Window
     {
+        public Task Initialize { get; }
         public MainWindow()
         {
             InitializeComponent();
-            DisplayReservationsAsync();
+            Initialize = DisplayReservationsAsync();           
         }
-        private async void DisplayReservationsAsync()
+        private async Task DisplayReservationsAsync()
         {
             if (File.Exists("Bokningar.txt"))
             {
@@ -66,7 +67,6 @@ namespace Labb_3
 
                 string name = "";
                 string input = "";
-                string validInput = "";
                 string time = "";
                 int tableNumber = 0;
                 int numberOfGuests = 0;
@@ -142,7 +142,7 @@ namespace Labb_3
 
                             Clear();
 
-                            DisplayReservationsAsync();
+                            await DisplayReservationsAsync();
                         }
                         else if (freeSeats<=0)
                         {
@@ -164,7 +164,7 @@ namespace Labb_3
 
                         Clear();
 
-                        DisplayReservationsAsync();
+                        await DisplayReservationsAsync();
                     }
                 }
             }
@@ -181,7 +181,7 @@ namespace Labb_3
                     return;
                 TableReservation.tableReservationProperties.Remove((string)reservationListBox.SelectedItem);
                 await TableReservation.WriteNewFileAsync();
-                DisplayReservationsAsync();
+                await DisplayReservationsAsync();
                 UpdateReservationListBox();
             }
             catch (Exception ex) 
