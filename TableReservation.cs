@@ -33,34 +33,39 @@ namespace Labb_3
         {
             Table newTable = new Table(tableNumber, numberOfGuests);
 
-            TableReservation.reservationList.Add(new TableReservation(name, newTable, numberOfGuests, date, time));
+            reservationList.Add(new TableReservation(name, newTable, numberOfGuests, date, time));
 
-            TableReservation.tableReservationProperties.Clear();
+            tableReservationProperties.Clear();
 
-            TableReservation.tableReservationProperties.Add(date.ToShortDateString()+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
+            tableReservationProperties.Add(date.ToShortDateString()+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
         }
-        public static void WriteToFile()
+        public static async Task WriteToFileAsync()
         {
             try
             {
                 using (StreamWriter sw = new StreamWriter("Bokningar.txt", true))
                 {
-                    TableReservation.tableReservationProperties.ForEach(reservation => sw.WriteLine(reservation));
+                    foreach (var reservationLine in tableReservationProperties)
+                    {
+                        await sw.WriteLineAsync(reservationLine);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 throw;
             }
-        }
-        public static void WriteNewFile()
+        } 
+        public static async Task WriteNewFileAsync()
         {
             try
             {
-
                 using (StreamWriter sw = new StreamWriter("Bokningar.txt", false))
                 {
-                    TableReservation.tableReservationProperties.ForEach(reservation => sw.WriteLine(reservation));
+                    foreach (var reservationLine in tableReservationProperties)
+                    {
+                        await sw.WriteLineAsync(reservationLine);
+                    }
                 }
             }
             catch (Exception ex)
@@ -68,13 +73,13 @@ namespace Labb_3
                 throw;
             }
         }
-        public static void ReadFromFile()
+        public static async Task ReadFromFileAsync()
         {
             try
             {
                 string fileName = "Bokningar.txt";
                 tableReservationProperties.Clear();
-                string[] lines = File.ReadAllLines(fileName);
+                string[] lines = await File.ReadAllLinesAsync(fileName);
                 tableReservationProperties = lines.ToList();
 
                 string dateFromFile;
@@ -107,7 +112,7 @@ namespace Labb_3
         }
         public static int GetNumberOfReservedSeatsAtSelectedTable(DateTime date, string name, string time, int tableNumber)
         {
-            var reservationsWithSameDate = TableReservation.reservationList.Where(reservation => reservation.Date==date)
+            var reservationsWithSameDate = reservationList.Where(reservation => reservation.Date==date)
                                                                            .Select(reservation => reservation)
                                                                            .ToList();
             var reservationWithSameTime = reservationsWithSameDate.Where(reservation => reservation.Time==time)
@@ -137,7 +142,7 @@ namespace Labb_3
         }
         public static int GetNumberOfFreeSeatsAtSelectedTable(DateTime date, string name, string time, int tableNumber)
         {
-            var reservationsWithSameDate = TableReservation.reservationList.Where(reservation => reservation.Date==date)
+            var reservationsWithSameDate = reservationList.Where(reservation => reservation.Date==date)
                                                                            .Select(reservation => reservation)
                                                                            .ToList();
             var reservationWithSameTime = reservationsWithSameDate.Where(reservation => reservation.Time==time)

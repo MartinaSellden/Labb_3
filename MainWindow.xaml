@@ -82,9 +82,9 @@
             <ComboBoxItem Name="item5" Content ="5" />
         </ComboBox>
         <StackPanel Grid.Column="4" Grid.Row ="12" Grid.RowSpan="4" Background="Linen" Margin="0,30,0,0">
-            <Button Name="reservationBtn" Content="Boka" Grid.Column="4" Grid.Row="8" Height="30" Margin="5,5,5,10" VerticalAlignment="Top" Click="MakeReservation">
+            <Button Name="reservationBtn" Content="Boka" Grid.Column="4" Grid.Row="8" Height="30" Margin="5,5,5,10" VerticalAlignment="Top" Click="MakeReservationAsync">
             </Button>
-            <Button Name="RemoveReservationBtn" Content="Avboka" Grid.Column="4" Grid.Row="9" Height="30" Margin="5,0,5,5" VerticalAlignment="Top" Click="RemoveReservation">
+            <Button Name="RemoveReservationBtn" Content="Avboka" Grid.Column="4" Grid.Row="9" Height="30" Margin="5,0,5,5" VerticalAlignment="Top" Click="RemoveReservationAsync">
             </Button>
         </StackPanel>
 
