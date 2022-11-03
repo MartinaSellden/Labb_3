@@ -56,10 +56,35 @@ namespace Labb_3
                 throw;
             }
         } 
+
         public static async Task WriteNewFileAsync()
         {
             try
             {
+                using (StreamWriter sw = new StreamWriter("Bokningar.txt", false))
+                {
+                    foreach (var reservationLine in tableReservationProperties)
+                    {
+                        await sw.WriteLineAsync(reservationLine);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public static async Task CreateReservationFileAsync()
+        {
+            try
+            {
+                tableReservationProperties = new List<string>
+                {"2022-11-25 20.00 3 4 Jack Sparrow",
+                 "2022-11-25 20.00 3 1 Davy Jones",
+                 "2022-11-30 19.00 2 1 Mahatma Ghandi", 
+                 "2022-12-03 19.00 4 2 Claes-Göran",
+                 "2022-11-30 19.00 2 1 Vincent van Gogh" };
+
                 using (StreamWriter sw = new StreamWriter("Bokningar.txt", false))
                 {
                     foreach (var reservationLine in tableReservationProperties)

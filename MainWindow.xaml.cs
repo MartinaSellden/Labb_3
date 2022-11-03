@@ -35,7 +35,14 @@ namespace Labb_3
         }
         private async void DisplayReservationsAsync()
         {
-            await TableReservation.ReadFromFileAsync(); 
+            if (File.Exists("Bokningar.txt"))
+            {
+                await TableReservation.ReadFromFileAsync();
+            }
+            else
+            {
+                await TableReservation.CreateReservationFileAsync();
+            }         
             UpdateReservationListBox();
         }
         private void UpdateReservationListBox()
