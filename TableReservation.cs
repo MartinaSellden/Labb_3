@@ -21,13 +21,13 @@ namespace Labb_3
         public static List<string> tableReservationProperties = new List<string>();
         public static List<TableReservation> reservationList = new List<TableReservation>();
 
-        public TableReservation(string Name, Table table, int numberOfGuests, DateTime Date, string Time)
+        public TableReservation(string name, Table table, int numberOfGuests, DateTime date, string time)
         {
-            this.Name = Name;
+            this.Name = name;
             this.table = table;
             this.NumberOfGuests = numberOfGuests;
-            this.Date = Date;
-            this.Time = Time;
+            this.Date = date;
+            this.Time = time;
         }
         public static void CreateNewReservation(DateTime date, string name, string time, int tableNumber, int numberOfGuests)
         {
@@ -144,26 +144,13 @@ namespace Labb_3
                                                                   .Select(reservation => reservation)
                                                                   .ToList();
 
-            var reservationsAtChosenTable = reservationWithSameTime.Where(reservation => reservation.table.Number==tableNumber)
+            var reservationsAtSelectedTable = reservationWithSameTime.Where(reservation => reservation.table.Number==tableNumber)
                                                                      .Select(reservation => reservation)
                                                                      .ToList();
-            var freeSeatsAtTable = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfFreeSeats)
+            var reservedSeatsPerReservationAtSelectedTable = reservationsAtSelectedTable.Select(reservation => reservation.table.NumberOfReservedSeats)
                                                             .ToList();
 
-            List<int> reservedSeatsPerReservation = new List<int>();
-
-            for (int i = 0; i<freeSeatsAtTable.Count; i++)
-            {
-                int reservedAtTable = 5 - freeSeatsAtTable[i];
-                reservedSeatsPerReservation.Add(reservedAtTable);
-            }
-            int sumOfReservedSeats = 0;
-
-            for (int i = 0; i<reservedSeatsPerReservation.Count; i++)
-            {
-                sumOfReservedSeats = sumOfReservedSeats + reservedSeatsPerReservation[i];
-            }
-            return sumOfReservedSeats;
+            return reservedSeatsPerReservationAtSelectedTable.Sum();
         }
         public static int GetNumberOfFreeSeatsAtSelectedTable(DateTime date, string name, string time, int tableNumber)
         {
@@ -177,23 +164,11 @@ namespace Labb_3
             var reservationsAtChosenTable = reservationWithSameTime.Where(reservation => reservation.table.Number==tableNumber)
                                                                      .Select(reservation => reservation)
                                                                      .ToList();
-            var freeSeatsAtTable = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfFreeSeats)
-                                                            .ToList();
 
-            List<int> reservedSeatsPerReservation = new List<int>();
+            var reservedSeatsPerReservationAtSelectedTable = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfReservedSeats) 
+                                                            .ToList();      
 
-            for (int i = 0; i<freeSeatsAtTable.Count; i++)
-            {
-                int reservedAtTable = 5 - freeSeatsAtTable[i];
-                reservedSeatsPerReservation.Add(reservedAtTable);
-            }
-            int sumOfReservedSeats = 0;
-
-            for (int i = 0; i<reservedSeatsPerReservation.Count; i++)
-            {
-                sumOfReservedSeats = sumOfReservedSeats + reservedSeatsPerReservation[i];
-            }
-
+            int sumOfReservedSeats = reservedSeatsPerReservationAtSelectedTable.Sum();
             int sumOfFreeSeats = 5;
 
             return sumOfFreeSeats-sumOfReservedSeats;

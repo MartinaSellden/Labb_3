@@ -152,7 +152,7 @@ namespace Labb_3
                         }
                         else
                         {
-                            MessageBox.Show("Det finns "+freeSeats+" platser kvar vid bord "+tableNumber+". Justera antalet personer " +
+                            MessageBox.Show("Det finns "+freeSeats+" plats(er) kvar vid bord "+tableNumber+". Justera antalet personer " +
                                 "du vill boka för eller välj annat bord.", "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
