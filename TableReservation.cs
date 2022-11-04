@@ -21,46 +21,52 @@ namespace Labb_3
         public static List<string> tableReservationProperties = new List<string>();
         public static List<TableReservation> reservationList = new List<TableReservation>();
 
-        public TableReservation(string Name, Table table, int numberOfGuests, DateTime Date, string Time)
+        public TableReservation(string name, Table table, int numberOfGuests, DateTime date, string time)
         {
-            this.Name = Name;
+            this.Name = name;
             this.table = table;
             this.NumberOfGuests = numberOfGuests;
-            this.Date = Date;
-            this.Time = Time;
+            this.Date = date;
+            this.Time = time;
         }
         public static void CreateNewReservation(DateTime date, string name, string time, int tableNumber, int numberOfGuests)
         {
             Table newTable = new Table(tableNumber, numberOfGuests);
 
-            TableReservation.reservationList.Add(new TableReservation(name, newTable, numberOfGuests, date, time));
+            reservationList.Add(new TableReservation(name, newTable, numberOfGuests, date, time));
 
-            TableReservation.tableReservationProperties.Clear();
+            tableReservationProperties.Clear();
 
-            TableReservation.tableReservationProperties.Add(date.ToShortDateString()+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
+            tableReservationProperties.Add(date.ToShortDateString()+" "+time+" "+tableNumber+" "+numberOfGuests+" "+name);
         }
-        public static void WriteToFile()
+        public static async Task WriteToFileAsync()
         {
             try
             {
                 using (StreamWriter sw = new StreamWriter("Bokningar.txt", true))
                 {
-                    TableReservation.tableReservationProperties.ForEach(reservation => sw.WriteLine(reservation));
+                    foreach (var reservationLine in tableReservationProperties)
+                    {
+                        await sw.WriteLineAsync(reservationLine);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 throw;
             }
-        }
-        public static void WriteNewFile()
+        } 
+
+        public static async Task WriteNewFileAsync()
         {
             try
             {
-
                 using (StreamWriter sw = new StreamWriter("Bokningar.txt", false))
                 {
-                    TableReservation.tableReservationProperties.ForEach(reservation => sw.WriteLine(reservation));
+                    foreach (var reservationLine in tableReservationProperties)
+                    {
+                        await sw.WriteLineAsync(reservationLine);
+                    }
                 }
             }
             catch (Exception ex)
@@ -68,13 +74,37 @@ namespace Labb_3
                 throw;
             }
         }
-        public static void ReadFromFile()
+        public static async Task CreateReservationFileAsync()
+        {
+            try
+            {
+                tableReservationProperties = new List<string>
+                {"2022-11-25 20.00 3 4 Jack Sparrow",
+                 "2022-11-25 20.00 3 1 Davy Jones",
+                 "2022-11-30 19.00 2 1 Mahatma Ghandi", 
+                 "2022-12-03 19.00 4 2 Claes-Göran",
+                 "2022-11-30 19.00 2 1 Vincent van Gogh" };
+
+                using (StreamWriter sw = new StreamWriter("Bokningar.txt", false))
+                {
+                    foreach (var reservationLine in tableReservationProperties)
+                    {
+                        await sw.WriteLineAsync(reservationLine);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public static async Task ReadFromFileAsync()
         {
             try
             {
                 string fileName = "Bokningar.txt";
                 tableReservationProperties.Clear();
-                string[] lines = File.ReadAllLines(fileName);
+                string[] lines = await File.ReadAllLinesAsync(fileName);
                 tableReservationProperties = lines.ToList();
 
                 string dateFromFile;
@@ -107,37 +137,24 @@ namespace Labb_3
         }
         public static int GetNumberOfReservedSeatsAtSelectedTable(DateTime date, string name, string time, int tableNumber)
         {
-            var reservationsWithSameDate = TableReservation.reservationList.Where(reservation => reservation.Date==date)
+            var reservationsWithSameDate = reservationList.Where(reservation => reservation.Date==date)
                                                                            .Select(reservation => reservation)
                                                                            .ToList();
             var reservationWithSameTime = reservationsWithSameDate.Where(reservation => reservation.Time==time)
                                                                   .Select(reservation => reservation)
                                                                   .ToList();
 
-            var reservationsAtChosenTable = reservationWithSameTime.Where(reservation => reservation.table.Number==tableNumber)
+            var reservationsAtSelectedTable = reservationWithSameTime.Where(reservation => reservation.table.Number==tableNumber)
                                                                      .Select(reservation => reservation)
                                                                      .ToList();
-            var freeSeatsAtTable = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfFreeSeats)
+            var reservedSeatsPerReservationAtSelectedTable = reservationsAtSelectedTable.Select(reservation => reservation.table.NumberOfReservedSeats)
                                                             .ToList();
 
-            List<int> reservedSeatsPerReservation = new List<int>();
-
-            for (int i = 0; i<freeSeatsAtTable.Count; i++)
-            {
-                int reservedAtTable = 5 - freeSeatsAtTable[i];
-                reservedSeatsPerReservation.Add(reservedAtTable);
-            }
-            int sumOfReservedSeats = 0;
-
-            for (int i = 0; i<reservedSeatsPerReservation.Count; i++)
-            {
-                sumOfReservedSeats = sumOfReservedSeats + reservedSeatsPerReservation[i];
-            }
-            return sumOfReservedSeats;
+            return reservedSeatsPerReservationAtSelectedTable.Sum();
         }
         public static int GetNumberOfFreeSeatsAtSelectedTable(DateTime date, string name, string time, int tableNumber)
         {
-            var reservationsWithSameDate = TableReservation.reservationList.Where(reservation => reservation.Date==date)
+            var reservationsWithSameDate = reservationList.Where(reservation => reservation.Date==date)
                                                                            .Select(reservation => reservation)
                                                                            .ToList();
             var reservationWithSameTime = reservationsWithSameDate.Where(reservation => reservation.Time==time)
@@ -147,23 +164,11 @@ namespace Labb_3
             var reservationsAtChosenTable = reservationWithSameTime.Where(reservation => reservation.table.Number==tableNumber)
                                                                      .Select(reservation => reservation)
                                                                      .ToList();
-            var freeSeatsAtTable = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfFreeSeats)
-                                                            .ToList();
 
-            List<int> reservedSeatsPerReservation = new List<int>();
+            var reservedSeatsPerReservationAtSelectedTable = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfReservedSeats) 
+                                                            .ToList();      
 
-            for (int i = 0; i<freeSeatsAtTable.Count; i++)
-            {
-                int reservedAtTable = 5 - freeSeatsAtTable[i];
-                reservedSeatsPerReservation.Add(reservedAtTable);
-            }
-            int sumOfReservedSeats = 0;
-
-            for (int i = 0; i<reservedSeatsPerReservation.Count; i++)
-            {
-                sumOfReservedSeats = sumOfReservedSeats + reservedSeatsPerReservation[i];
-            }
-
+            int sumOfReservedSeats = reservedSeatsPerReservationAtSelectedTable.Sum();
             int sumOfFreeSeats = 5;
 
             return sumOfFreeSeats-sumOfReservedSeats;

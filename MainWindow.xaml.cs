@@ -28,14 +28,22 @@ namespace Labb_3
     /// </summary>
     public partial class MainWindow : Window
     {
+        public Task Initialize { get; }
         public MainWindow()
         {
             InitializeComponent();
-            DisplayReservations();
+            Initialize = DisplayReservationsAsync();           
         }
-        private void DisplayReservations()
+        private async Task DisplayReservationsAsync()
         {
-            TableReservation.ReadFromFile();
+            if (File.Exists("Bokningar.txt"))
+            {
+                await TableReservation.ReadFromFileAsync();
+            }
+            else
+            {
+                await TableReservation.CreateReservationFileAsync();
+            }         
             UpdateReservationListBox();
         }
         private void UpdateReservationListBox()
@@ -51,15 +59,14 @@ namespace Labb_3
             tableNumberComboBox.SelectedValue=null;
             GuestsComboBox.SelectedValue=null;
         }
-        private void MakeReservation(object sender, RoutedEventArgs e)
+        private async void MakeReservationAsync(object sender, RoutedEventArgs e)
         {
             try
             {
-                TableReservation.ReadFromFile();
+                await TableReservation.ReadFromFileAsync();
 
                 string name = "";
                 string input = "";
-                string validInput = "";
                 string time = "";
                 int tableNumber = 0;
                 int numberOfGuests = 0;
@@ -131,11 +138,11 @@ namespace Labb_3
                         {
                             TableReservation.CreateNewReservation(date, name, time, tableNumber, numberOfGuests);
 
-                            TableReservation.WriteToFile();
+                            await TableReservation.WriteToFileAsync();
 
                             Clear();
 
-                            DisplayReservations();
+                            await DisplayReservationsAsync();
                         }
                         else if (freeSeats<=0)
                         {
@@ -145,7 +152,7 @@ namespace Labb_3
                         }
                         else
                         {
-                            MessageBox.Show("Det finns "+freeSeats+" platser kvar vid bord "+tableNumber+". Justera antalet personer " +
+                            MessageBox.Show("Det finns "+freeSeats+" plats(er) kvar vid bord "+tableNumber+". Justera antalet personer " +
                                 "du vill boka för eller välj annat bord.", "Begränsat antal platser vid bordet", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
@@ -153,11 +160,11 @@ namespace Labb_3
                     {
                         TableReservation.CreateNewReservation(date, name, time, tableNumber, numberOfGuests);
 
-                        TableReservation.WriteToFile();
+                        await TableReservation.WriteToFileAsync();
 
                         Clear();
 
-                        DisplayReservations();
+                        await DisplayReservationsAsync();
                     }
                 }
             }
@@ -166,15 +173,15 @@ namespace Labb_3
                 MessageBox.Show(ex.Message);
             }
         }
-        private void RemoveReservation(object sender, RoutedEventArgs e)   //Ändra namn på metoderna
+        private async void RemoveReservationAsync(object sender, RoutedEventArgs e) 
         {
             try
             {
                 if (reservationListBox.SelectedItem==null)
                     return;
                 TableReservation.tableReservationProperties.Remove((string)reservationListBox.SelectedItem);
-                TableReservation.WriteNewFile();
-                DisplayReservations();
+                await TableReservation.WriteNewFileAsync();
+                await DisplayReservationsAsync();
                 UpdateReservationListBox();
             }
             catch (Exception ex) 

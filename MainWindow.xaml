@@ -39,12 +39,10 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Restaurang" FontSize="25" FontFamily="Cascadia Code ExtraLight" Margin="0,12,0,0"/>
         <TextBlock Grid.Row="1" Grid.Column="4" Text=".Net" FontSize="38" FontFamily="Cascadia Code ExtraLight" HorizontalAlignment="Center" Margin="-12,3,0,0"/>
-        <TextBlock Grid.Row="1" Grid.Column="6" Text="Alltid glad och mätt!" FontSize="19" FontFamily="Cascadia Code ExtraLight" HorizontalAlignment="Center" Margin="0,15,0,0"/>
+        <TextBlock Grid.Row="1" Grid.Column="6" Text="Alltid glad och mätt!" FontSize="20" FontFamily="Cascadia Code ExtraLight" HorizontalAlignment="Center" Margin="0,15,0,0"/>
         <TextBlock Grid.Column="1" Grid.Row="3"  Text="Bokningar" Margin="5,10,5,5"/>
-        <Label Name="dateLabel" Content="Datum" Grid.Column="4" Grid.Row="3" Margin="5">
-        </Label>
-        <DatePicker Grid.Column="4" Grid.Row="4" Text="Välj datum" Name ="datepicker1" Margin="5">
-        </DatePicker>
+        <Label Name="dateLabel" Content="Datum" Grid.Column="4" Grid.Row="3" Margin="5"/>
+        <DatePicker Grid.Column="4" Grid.Row="4" Text="Välj datum" Name ="datepicker1" Margin="5"/>
         <Label Content="Tid" Grid.Column="4" Grid.Row="5"/>
         <ComboBox Name="timeComboBox" Grid.Column="4" Grid.Row="6" VerticalAlignment="Center" IsEditable="False" Margin="5" >
             <ComboBoxItem Name ="time1" Content = "17.00" />
@@ -64,13 +62,15 @@
             <ComboBoxItem Name="table6" Content ="6" />
             <ComboBoxItem Name="table7" Content ="7" />
         </ComboBox>
-
         <Label Content="Namn" Grid.Column="6" Grid.Row="3" Margin="5"/>
-        <TextBox Name ="nameTextBox" Grid.Column="6" Grid.Row="4" Margin="5">
-        </TextBox>
-
+        <TextBox Name ="nameTextBox" Grid.Column="6" Grid.Row="4" Margin="5"/>
         <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="13" Background="Linen">
             <ListBox Name="reservationListBox" Margin="8,8,8,8">
+                <ListBox.ToolTip>
+                    <ToolTip Placement="Mouse">
+                        Tryck för att markera bokningen i listan och sedan "Avboka" för att avboka.
+                    </ToolTip>
+                </ListBox.ToolTip>
             </ListBox>
         </StackPanel>
         <Label Name="numberOfGuestsLabel" Content="Antal personer" Grid.Column="4" Grid.Row="9" Margin="5,0,5,0 "/>
@@ -82,12 +82,11 @@
             <ComboBoxItem Name="item5" Content ="5" />
         </ComboBox>
         <StackPanel Grid.Column="4" Grid.Row ="12" Grid.RowSpan="4" Background="Linen" Margin="0,30,0,0">
-            <Button Name="reservationBtn" Content="Boka" Grid.Column="4" Grid.Row="8" Height="30" Margin="5,5,5,10" VerticalAlignment="Top" Click="MakeReservation">
+            <Button Name="reservationBtn" Content="Boka" Grid.Column="4" Grid.Row="8" Height="30" Margin="5,5,5,10" VerticalAlignment="Top" Click="MakeReservationAsync">
             </Button>
-            <Button Name="RemoveReservationBtn" Content="Avboka" Grid.Column="4" Grid.Row="9" Height="30" Margin="5,0,5,5" VerticalAlignment="Top" Click="RemoveReservation">
+            <Button Name="RemoveReservationBtn" Content="Avboka" Grid.Column="4" Grid.Row="9" Height="30" Margin="5,0,5,5" VerticalAlignment="Top" Click="RemoveReservationAsync">
             </Button>
         </StackPanel>
-
     </Grid>
 
 
