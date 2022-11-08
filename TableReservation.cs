@@ -19,7 +19,7 @@ namespace Labb_3
         public int NumberOfGuests { get; set; }
 
         public static List<string> tableReservationProperties = new List<string>();
-        public static List<TableReservation> reservationList = new List<TableReservation>();
+        public static List<TableReservation> tableReservationList = new List<TableReservation>();
 
         public TableReservation(string name, Table table, int numberOfGuests, DateTime date, string time)
         {
@@ -33,7 +33,7 @@ namespace Labb_3
         {
             Table newTable = new Table(tableNumber, numberOfGuests);
 
-            reservationList.Add(new TableReservation(name, newTable, numberOfGuests, date, time));
+            tableReservationList.Add(new TableReservation(name, newTable, numberOfGuests, date, time));
 
             tableReservationProperties.Clear();
 
@@ -115,7 +115,7 @@ namespace Labb_3
                 Table table;
                 string name;
 
-                reservationList.Clear();
+                tableReservationList.Clear();
 
                 foreach (string reservation in tableReservationProperties)
                 {
@@ -127,7 +127,7 @@ namespace Labb_3
                     table = new Table(Int32.Parse(tableNumber), numberOfGuests);
                     name = reservation.Substring(21);
 
-                    reservationList.Add(new TableReservation(name, table, numberOfGuests, date, time));
+                    tableReservationList.Add(new TableReservation(name, table, numberOfGuests, date, time));
                 }
             }
             catch (Exception ex)
@@ -137,7 +137,7 @@ namespace Labb_3
         }
         public static int GetNumberOfReservedSeatsAtSelectedTable(DateTime date, string name, string time, int tableNumber)
         {
-            var reservationsWithSameDate = reservationList.Where(reservation => reservation.Date==date)
+            var reservationsWithSameDate = tableReservationList.Where(reservation => reservation.Date==date)
                                                                            .Select(reservation => reservation)
                                                                            .ToList();
             var reservationWithSameTime = reservationsWithSameDate.Where(reservation => reservation.Time==time)
@@ -154,24 +154,8 @@ namespace Labb_3
         }
         public static int GetNumberOfFreeSeatsAtSelectedTable(DateTime date, string name, string time, int tableNumber)
         {
-            var reservationsWithSameDate = reservationList.Where(reservation => reservation.Date==date)
-                                                                           .Select(reservation => reservation)
-                                                                           .ToList();
-            var reservationWithSameTime = reservationsWithSameDate.Where(reservation => reservation.Time==time)
-                                                                  .Select(reservation => reservation)
-                                                                  .ToList();
-
-            var reservationsAtChosenTable = reservationWithSameTime.Where(reservation => reservation.table.Number==tableNumber)
-                                                                     .Select(reservation => reservation)
-                                                                     .ToList();
-
-            var reservedSeatsPerReservationAtSelectedTable = reservationsAtChosenTable.Select(reservation => reservation.table.NumberOfReservedSeats) 
-                                                            .ToList();      
-
-            int sumOfReservedSeats = reservedSeatsPerReservationAtSelectedTable.Sum();
-            int sumOfFreeSeats = 5;
-
-            return sumOfFreeSeats-sumOfReservedSeats;
+            int reservedSeats = GetNumberOfReservedSeatsAtSelectedTable(date, name, time, tableNumber);
+            return 5-reservedSeats;
         }
     }
 }
