@@ -12,22 +12,22 @@ namespace Labb_3
 {
     internal class TableReservation
     {
-        public string Name { get; set; }
-        public DateTime Date { get; set; }
-        public string Time { get; set; }
-        public Table table { get; set; }
-        public int NumberOfGuests { get; set; }
+        string Name { get; }
+        DateTime Date { get; }
+        string Time { get; }
+        Table table { get; }
+        int NumberOfGuests { get;}
 
         public static List<string> tableReservationProperties = new List<string>();
         public static List<TableReservation> tableReservationList = new List<TableReservation>();
 
         public TableReservation(string name, Table table, int numberOfGuests, DateTime date, string time)
         {
-            this.Name = name;
+            Name = name;
             this.table = table;
-            this.NumberOfGuests = numberOfGuests;
-            this.Date = date;
-            this.Time = time;
+            NumberOfGuests = numberOfGuests;
+            Date = date;
+            Time = time;
         }
         public static void CreateNewReservation(DateTime date, string name, string time, int tableNumber, int numberOfGuests)
         {
@@ -56,7 +56,6 @@ namespace Labb_3
                 throw;
             }
         } 
-
         public static async Task WriteNewFileAsync()
         {
             try

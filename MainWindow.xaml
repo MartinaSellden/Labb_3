@@ -40,6 +40,7 @@
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Restaurang" FontSize="25" FontFamily="Cascadia Code ExtraLight" Margin="0,12,0,0"/>
         <TextBlock Grid.Row="1" Grid.Column="4" Text=".Net" FontSize="38" FontFamily="Cascadia Code ExtraLight" HorizontalAlignment="Center" Margin="-12,3,0,0"/>
         <TextBlock Grid.Row="1" Grid.Column="6" Text="Alltid glad och mätt!" FontSize="20" FontFamily="Cascadia Code ExtraLight" HorizontalAlignment="Center" Margin="0,15,0,0"/>
+        <TextBlock Grid.Row="1" Grid.Column="5" Text="-" FontSize="22"  HorizontalAlignment="Center" Margin="0,10,0,0"/>
         <TextBlock Grid.Column="1" Grid.Row="3"  Text="Bokningar" Margin="5,10,5,5"/>
         <Label Name="dateLabel" Content="Datum" Grid.Column="4" Grid.Row="3" Margin="5"/>
         <DatePicker Grid.Column="4" Grid.Row="4" Text="Välj datum" Name ="datepicker1" Margin="5"/>
@@ -88,6 +89,4 @@
             </Button>
         </StackPanel>
     </Grid>
-
-
 </Window>

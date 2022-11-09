@@ -10,17 +10,11 @@ namespace Labb_3
     {
        public int Number { get; set; }
        public int NumberOfReservedSeats { get; set; }
-       public int NumberOfFreeSeats { get; set; }
-
-
 
         public Table(int number, int numberOfGuests)
         {
-            Number = number;
-           
-            this.NumberOfFreeSeats = 5 - numberOfGuests;
-            this.NumberOfReservedSeats = numberOfGuests;
-
+            Number = number; 
+            NumberOfReservedSeats = numberOfGuests;
         }
     }
 }
