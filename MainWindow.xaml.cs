@@ -148,7 +148,6 @@ namespace Labb_3
                         {
                             MessageBox.Show("Det finns inga lediga platser vid bord nummer "+tableNumber+", vänligen välj ett annat bord!", "Inga lediga" +
                                 " platser vid bord "+tableNumber, MessageBoxButton.OK, MessageBoxImage.Error);
-
                         }
                         else
                         {
