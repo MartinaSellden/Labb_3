@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Labb_3
 {
-    internal class Table
+    internal class Table: ITable
     {
        public int Number { get; }
        public int NumberOfReservedSeats { get; }

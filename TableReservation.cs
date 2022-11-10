@@ -10,13 +10,13 @@ using System.Runtime.CompilerServices;
 
 namespace Labb_3
 {
-    internal class TableReservation
+    internal class TableReservation: ITableReservation
     {
-        string Name { get; }
-        DateTime Date { get; }
-        string Time { get; }
-        Table table { get; }
-        int NumberOfGuests { get;}
+        public string Name { get; }
+        public DateTime Date { get; }
+        public string Time { get; }
+        public Table table { get; }
+        public int NumberOfGuests { get;}
 
         public static List<string> tableReservationProperties = new List<string>();
         public static List<TableReservation> tableReservationList = new List<TableReservation>();
